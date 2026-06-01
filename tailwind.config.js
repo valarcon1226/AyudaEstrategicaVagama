@@ -2,7 +2,6 @@
 module.exports = {
   content: [
     "./frontend/**/*.{html,js}",
-    "./dashboard/**/*.{html,js}",
   ],
   darkMode: "class",
   theme: {
