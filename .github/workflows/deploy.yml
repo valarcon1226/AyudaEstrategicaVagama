@@ -1,0 +1,96 @@
+# ============================================================
+# GitHub Actions — CI/CD: Build + Deploy a GoDaddy vía FTP
+# ============================================================
+# Se activa en cada push a la rama 'main'.
+#
+# Lo que hace:
+#   1. Instala dependencias (TailwindCSS)
+#   2. Compila el CSS de frontend y dashboard
+#   3. Despliega frontend/ → GoDaddy public_html/
+#   4. Despliega dashboard/ → GoDaddy public_html/panel/
+#
+# SECRETS requeridos (configurar en GitHub → Settings → Secrets):
+#   FTP_SERVER   → tu servidor FTP de GoDaddy (ej: ftp.tudominio.com)
+#   FTP_USERNAME → tu usuario FTP de GoDaddy
+#   FTP_PASSWORD → tu contraseña FTP de GoDaddy
+# ============================================================
+
+name: 🚀 Deploy to GoDaddy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:   # Permite correr manualmente desde GitHub UI
+
+jobs:
+  build-and-deploy:
+    name: Build CSS + Deploy FTP
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout del código ──────────────────────────────
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      # ── 2. Setup Node.js ────────────────────────────────────
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ── 3. Instalar dependencias ────────────────────────────
+      - name: 📦 Instalar dependencias
+        run: npm ci
+
+      # ── 4. Build CSS Frontend ───────────────────────────────
+      - name: 🎨 Build CSS Frontend
+        run: npm run build
+
+      # ── 5. Build CSS Dashboard ──────────────────────────────
+      - name: 🎨 Build CSS Dashboard
+        run: npm run build:dashboard
+
+      # ── 6. Deploy Frontend → public_html/ ───────────────────
+      - name: 🌐 Deploy Frontend a GoDaddy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server:            ${{ secrets.FTP_SERVER }}
+          username:          ${{ secrets.FTP_USERNAME }}
+          password:          ${{ secrets.FTP_PASSWORD }}
+          local-dir:         ./frontend/
+          server-dir:        ./public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/assets/css/input.css
+
+      # ── 7. Deploy Dashboard → public_html/panel/ ────────────
+      - name: 🔐 Deploy Dashboard a GoDaddy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server:            ${{ secrets.FTP_SERVER }}
+          username:          ${{ secrets.FTP_USERNAME }}
+          password:          ${{ secrets.FTP_PASSWORD }}
+          local-dir:         ./dashboard/
+          server-dir:        ./public_html/panel/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/assets/css/input.css
+
+      # ── 8. Notificación de éxito ────────────────────────────
+      - name: ✅ Deploy completado
+        if: success()
+        run: |
+          echo "🎉 Deploy exitoso!"
+          echo "🌐 Frontend: https://tu-dominio.com"
+          echo "🔐 Panel:    https://tu-dominio.com/panel"
+
+      # ── 9. Notificación de falla ────────────────────────────
+      - name: ❌ Deploy fallido
+        if: failure()
+        run: echo "❌ El deploy falló. Revisa los logs arriba."

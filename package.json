@@ -1,0 +1,15 @@
+{
+  "name": "ayuda-estrategica-b2b",
+  "version": "1.0.0",
+  "description": "Plataforma HR B2B - Ayuda Estratégica Vagama",
+  "scripts": {
+    "dev": "tailwindcss -i ./frontend/assets/css/input.css -o ./frontend/assets/css/styles.css --watch",
+    "build": "tailwindcss -i ./frontend/assets/css/input.css -o ./frontend/assets/css/styles.css --minify",
+    "dev:dashboard": "tailwindcss -i ./dashboard/assets/css/input.css -o ./dashboard/assets/css/styles.css --watch",
+    "build:dashboard": "tailwindcss -i ./dashboard/assets/css/input.css -o ./dashboard/assets/css/styles.css --minify",
+    "build:all": "npm run build && npm run build:dashboard"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

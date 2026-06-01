@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Ayuda Estratégica | Consultoría en Talento Humano</title>
+    <meta name="description"
+        content="Soluciones Masivas de Reclutamiento y Outsourcing de RRHH diseñadas específicamente para el ROI y la competitividad de su empresa en Colombia, México y LatAm." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e0e3e5",
+                        "on-surface": "#181c1e",
+                        "on-error": "#ffffff",
+                        "primary-container": "#001f3f",
+                        "tertiary-fixed": "#9cf0ff",
+                        "on-primary-fixed": "#001c3a",
+                        "primary": "#000613",
+                        "inverse-on-surface": "#eef1f3",
+                        "surface-dim": "#d7dadc",
+                        "surface-container-low": "#f1f4f6",
+                        "outline-variant": "#c4c6cf",
+                        "on-background": "#181c1e",
+                        "inverse-primary": "#afc8f0",
+                        "on-primary-container": "#6f88ad",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f7fafc",
+                        "secondary-fixed": "#d7e2ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#003370",
+                        "surface-tint": "#476083",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-fixed-dim": "#00daf3",
+                        "primary-fixed-dim": "#afc8f0",
+                        "on-tertiary-fixed-variant": "#004f58",
+                        "on-surface-variant": "#43474e",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#ebeef0",
+                        "surface": "#f7fafc",
+                        "inverse-surface": "#2d3133",
+                        "secondary": "#115cb9",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001f24",
+                        "on-tertiary-container": "#0094a6",
+                        "background": "#f7fafc",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#d4e3ff",
+                        "on-secondary-fixed": "#001a40",
+                        "tertiary": "#00070a",
+                        "on-secondary-fixed-variant": "#004491",
+                        "secondary-fixed-dim": "#acc7ff",
+                        "secondary-container": "#659dfe",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "tertiary-container": "#002328",
+                        "surface-container-high": "#e5e9eb",
+                        "outline": "#74777f",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to right, #001f3f, #000613);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #00daf3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full z-50 border-t-2 border-cyan-400 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-xl shadow-slate-900/5 dark:shadow-none">
+        <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
+            <div class="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white">
+                <img alt="Logo Ayuda Estratégica" class="h-10 w-auto" src="logo 1.png" />
+                <span class="tracking-tight">Ayuda Estratégica</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8 font-sans tracking-tight font-medium">
+                <a class="text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500 pb-1" href="index.html"
+                    id="nav-servicios">Servicios</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                    href="planes.html" id="nav-planes">Planes</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                    href="contacto.html" id="nav-contacto">Contacto</a>
+            </div>
+            <a href="contacto.html" id="nav-cta-btn"
+                class="bg-[#001f3f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:scale-95 active:opacity-80 transition-all duration-200">
+                Hablar con un Estratega
+            </a>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-8 z-10">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/20 text-secondary font-semibold text-xs uppercase tracking-widest rounded-full mb-6">
+                    <span class="material-symbols-outlined text-sm">globe</span> Colombia, México y LatAm
+                </div>
+                <h1 class="text-6xl md:text-7xl font-extrabold text-primary tracking-tighter leading-[0.95] mb-8">
+                    Transformamos su Capital Humano con <span class="text-secondary">Inteligencia Estratégica.</span>
+                </h1>
+                <p class="text-xl text-on-surface-variant max-w-2xl mb-10 leading-relaxed">
+                    Soluciones Masivas de Reclutamiento y Outsourcing de RRHH diseñadas específicamente para el ROI y la
+                    competitividad de su empresa en la región.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="contacto.html" id="hero-cta-primary"
+                        class="px-8 py-5 bg-secondary text-white rounded-lg font-bold text-lg shadow-lg hover:shadow-secondary/20 transition-all text-center">
+                        Solicitar Consultoría Estratégica
+                    </a>
+                    <a href="planes.html" id="hero-cta-secondary"
+                        class="px-8 py-5 border-b-2 border-surface-container-highest text-primary font-bold text-lg hover:border-tertiary-fixed-dim transition-all text-center">
+                        Ver Servicios
+                    </a>
+                </div>
+            </div>
+            <div class="lg:col-span-4 relative">
+                <div class="aspect-square bg-surface-container rounded-xl overflow-hidden shadow-2xl relative">
+                    <img alt="Strategic growth" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh3YYxCKg4jxgStWbX_GK3ThU5uPeN0dGXiTvHo-fUvzj3hrD-6z2D5KgzNUE4aU5_AaKsrpsVB0DTl0pU11t05KOpTQ6cRwPVpyHiS08k7FUVDp57it_BiMCSwLpHMhfux-KdFb2H5rMsWB9SvrZvtxh1pk9rN5PjL8KrmDpl85AVO1_zVtNyVZQ5262ITHiTR3vAy7NE1Am1kO3LvbvGdLU2ghz7acHmSVnEFYt0oTQtAHtF8ngl7PaKk3Q4_z4gbP9WdV1F6U9t" />
+                    <div class="absolute inset-0 bg-primary-container/20 mix-blend-overlay"></div>
+                </div>
+                <!-- Floating KPI -->
+                <div
+                    class="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-xl border-l-4 border-tertiary-fixed-dim">
+                    <p class="text-sm font-bold text-on-surface-variant uppercase">Efectividad</p>
+                    <p class="text-4xl font-black text-primary">98.4%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Value Prop Section (Metodología de Alto Impacto) -->
+    <section class="py-32 bg-surface">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="mb-20">
+                <h2 class="text-4xl font-bold tracking-tighter text-primary mb-4">Metodología de Alto Impacto</h2>
+                <div class="h-1 w-20 bg-tertiary-fixed-dim"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Card 1 -->
+                <div
+                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all group">
+                    <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">payments</span>
+                    <h3 class="text-xl font-bold mb-4">ROI Enfocado</h3>
+                    <p class="text-on-surface-variant leading-relaxed">Optimizamos cada etapa del proceso para asegurar
+                        que su inversión en talento sea un activo financiero medible.</p>
+                </div>
+                <!-- Card 2 -->
+                <div
+                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
+                    <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">trending_down</span>
+                    <h3 class="text-xl font-bold mb-4">Reducción de Rotación</h3>
+                    <p class="text-on-surface-variant leading-relaxed">Utilizamos algoritmos de perfilación avanzada
+                        para encontrar el "match" perfecto de cultura y habilidades.</p>
+                </div>
+                <!-- Card 3 -->
+                <div
+                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
+                    <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">bolt</span>
+                    <h3 class="text-xl font-bold mb-4">Entrega Ágil</h3>
+                    <p class="text-on-surface-variant leading-relaxed">Nuestra red masiva en Colombia y México garantiza
+                        la cobertura de vacantes críticas en tiempos récord.</p>
+                </div>
+                <!-- Card 4 -->
+                <div
+                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
+                    <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">gavel</span>
+                    <h3 class="text-xl font-bold mb-4">Cumplimiento Legal</h3>
+                    <p class="text-on-surface-variant leading-relaxed">Blindamos su operación con una gestión rigurosa
+                        de normativas laborales internacionales y locales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Logo Marquee -->
+    <section class="py-16 bg-surface-container-low overflow-hidden border-y border-outline-variant/30">
+        <p class="text-center text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-12">Confían en
+            nuestra visión estratégica</p>
+        <div class="flex animate-marquee whitespace-nowrap gap-16 items-center">
+            <!-- First set -->
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Medycare</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Clínica
+                de Obesidad</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">DHI
+                Global</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Grupo
+                Jurídico Deudu</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Transportes
+                Rincón</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Bio-Estética</span>
+            <!-- Duplicate for infinite effect -->
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Medycare</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Clínica
+                de Obesidad</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">DHI
+                Global</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Grupo
+                Jurídico Deudu</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Transportes
+                Rincón</span>
+            <span
+                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Bio-Estética</span>
+        </div>
+    </section>
+    <!-- Content / Bento Grid Services -->
+    <section class="py-32 bg-surface">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-bold tracking-tight text-primary">Nuestras Unidades de Negocio</h2>
+                <div class="h-1 w-20 bg-secondary mx-auto mt-4"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
+                <div
+                    class="md:col-span-2 bg-surface-container-low rounded-lg p-10 flex flex-col justify-end shadow-sm hover:shadow-xl transition-all relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-9xl">group_add</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-primary mb-4">Reclutamiento Masivo</h3>
+                    <p class="text-on-surface-variant max-w-md">Capacidad técnica para movilizar cientos de perfiles
+                        operativos y tácticos en tiempo récord.</p>
+                </div>
+                <div
+                    class="bg-secondary rounded-lg p-10 text-white flex flex-col justify-between hover:bg-primary transition-all">
+                    <span class="material-symbols-outlined text-4xl">verified_user</span>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Headhunting Elite</h3>
+                        <p class="text-white/80 text-sm">C-Level y mandos medios con visión estratégica.</p>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-container-low rounded-lg p-10 shadow-sm flex flex-col justify-between border-t-4 border-tertiary-fixed-dim">
+                    <span class="material-symbols-outlined text-4xl text-tertiary-fixed-dim">analytics</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-primary mb-2">Auditoría RRHH</h3>
+                        <p class="text-on-surface-variant text-sm">Diagnóstico y optimización de procesos internos.</p>
+                    </div>
+                </div>
+                <div
+                    class="md:col-span-2 bg-primary-container text-white rounded-lg p-10 flex items-center gap-8 group">
+                    <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-4xl">hub</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Outsourcing Integral</h3>
+                        <p class="text-white/60">Gestión de nómina, bienestar y legal de principio a fin.</p>
+                    </div>
+                    <span
+                        class="material-symbols-outlined ml-auto text-tertiary-fixed-dim group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="w-full border-t border-slate-200/10 bg-slate-50 dark:bg-slate-950">
+        <div class="flex flex-col md:flex-row justify-between items-center py-12 px-8 max-w-7xl mx-auto">
+            <div class="text-lg font-black text-slate-900 dark:text-white mb-6 md:mb-0">
+                Ayuda Estratégica
+            </div>
+            <div class="flex flex-wrap justify-center gap-8 text-sm font-sans tracking-wide uppercase">
+                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100"
+                    href="#">Privacidad</a>
+                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100"
+                    href="#">Términos</a>
+                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100"
+                    href="https://www.linkedin.com/in/seleccion-ayuda-estrategica/" target="_blank">LinkedIn</a>
+            </div>
+            <div class="mt-8 md:mt-0 text-slate-500 dark:text-slate-400 text-xs">
+                © 2019 Ayuda Estratégica. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+    <!-- FAB -->
+    <div class="fixed bottom-8 right-8 z-40">
+        <a href="contacto.html" id="fab-chat-btn"
+            class="w-16 h-16 bg-secondary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group">
+            <span class="material-symbols-outlined text-3xl">chat</span>
+        </a>
+    </div>
+</body>
+
+</html>

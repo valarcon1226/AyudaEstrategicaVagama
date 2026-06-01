@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Ayuda Estratégica</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: {
+          "primary": "#000613", "primary-container": "#001f3f",
+          "on-primary": "#ffffff", "on-primary-container": "#6f88ad",
+          "secondary": "#115cb9", "tertiary-fixed-dim": "#00daf3",
+          "surface": "#f7fafc", "surface-container-low": "#f1f4f6",
+          "surface-container": "#ebeef0", "surface-container-lowest": "#ffffff",
+          "on-surface": "#181c1e", "on-surface-variant": "#43474e",
+          "outline-variant": "#c4c6cf", "error": "#ba1a1a",
+        },
+        fontFamily: { sans: ["Inter", "sans-serif"] }
+      }}
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; line-height:1; }
+    .sidebar-link { display:flex; align-items:center; gap:12px; padding:10px 16px; border-radius:10px; font-size:0.875rem; font-weight:500; color:#43474e; transition:all 0.2s; cursor:pointer; }
+    .sidebar-link:hover { background:#ebeef0; color:#181c1e; }
+    .sidebar-link.active { background:rgba(17,92,185,0.1); color:#115cb9; font-weight:700; }
+    .chip { display:inline-flex; align-items:center; gap:4px; padding:2px 10px; border-radius:9999px; font-size:0.7rem; font-weight:700; }
+  </style>
+</head>
+
+<body class="bg-[#f1f4f6] font-sans antialiased">
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- ── SIDEBAR ──────────────────────────────────────────── -->
+    <aside class="w-64 bg-[#ffffff] border-r border-[#c4c6cf]/30 flex flex-col shrink-0">
+      <!-- Logo -->
+      <div class="p-6 border-b border-[#c4c6cf]/20">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-[#001f3f] rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined text-[#00daf3] text-sm" style="font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24;">shield_person</span>
+          </div>
+          <div>
+            <p class="font-black text-sm text-[#000613] leading-none">Panel AE</p>
+            <p class="text-[10px] text-[#43474e]">Ayuda Estratégica</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+        <p class="text-[10px] font-black text-[#74777f] uppercase tracking-widest px-4 mb-2 mt-2">Principal</p>
+        <a href="dashboard.html" class="sidebar-link active">
+          <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+        </a>
+        <a href="agenda.html" class="sidebar-link">
+          <span class="material-symbols-outlined text-xl">calendar_month</span> Agenda
+        </a>
+
+        <p class="text-[10px] font-black text-[#74777f] uppercase tracking-widest px-4 mb-2 mt-5">Gestión</p>
+        <a href="vacantes.html" class="sidebar-link">
+          <span class="material-symbols-outlined text-xl">work</span> Vacantes
+        </a>
+        <a href="candidatos.html" class="sidebar-link">
+          <span class="material-symbols-outlined text-xl">group</span> Candidatos
+        </a>
+        <a href="empresas.html" class="sidebar-link">
+          <span class="material-symbols-outlined text-xl">business</span> Empresas
+        </a>
+      </nav>
+
+      <!-- User Footer -->
+      <div class="p-4 border-t border-[#c4c6cf]/20">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 min-w-0">
+            <div class="w-8 h-8 bg-[#115cb9]/10 rounded-full flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[#115cb9] text-base">person</span>
+            </div>
+            <p id="user-name" class="text-sm font-semibold text-[#181c1e] truncate">Cargando...</p>
+          </div>
+          <button onclick="signOut()" title="Cerrar sesión"
+                  class="text-[#74777f] hover:text-[#ba1a1a] transition-colors ml-2">
+            <span class="material-symbols-outlined text-base">logout</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ──────────────────────────────────────── -->
+    <main class="flex-1 overflow-y-auto">
+
+      <!-- Top Bar -->
+      <div class="bg-white border-b border-[#c4c6cf]/20 px-8 py-5 flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-black text-[#000613]">Dashboard</h1>
+          <p class="text-xs text-[#43474e]" id="dash-fecha">Cargando...</p>
+        </div>
+        <a href="vacantes.html?action=new"
+           class="flex items-center gap-2 bg-[#115cb9] text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-[#0d4a9a] transition-all">
+          <span class="material-symbols-outlined text-base">add</span> Nueva Vacante
+        </a>
+      </div>
+
+      <div class="p-8">
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-black text-[#43474e] uppercase tracking-wider">Vacantes Activas</span>
+              <span class="material-symbols-outlined text-[#115cb9] text-2xl">work</span>
+            </div>
+            <p id="stat-vacantes" class="text-4xl font-black text-[#000613]">—</p>
+            <p class="text-xs text-[#43474e] mt-1">posiciones abiertas</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-black text-[#43474e] uppercase tracking-wider">Candidatos Hoy</span>
+              <span class="material-symbols-outlined text-[#00daf3] text-2xl">person_add</span>
+            </div>
+            <p id="stat-candidatos-hoy" class="text-4xl font-black text-[#000613]">—</p>
+            <p class="text-xs text-[#43474e] mt-1">aplicaciones nuevas</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-black text-[#43474e] uppercase tracking-wider">En Proceso</span>
+              <span class="material-symbols-outlined text-amber-500 text-2xl">hourglass_empty</span>
+            </div>
+            <p id="stat-en-proceso" class="text-4xl font-black text-[#000613]">—</p>
+            <p class="text-xs text-[#43474e] mt-1">candidatos calificados</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-black text-[#43474e] uppercase tracking-wider">Citas Hoy</span>
+              <span class="material-symbols-outlined text-purple-500 text-2xl">calendar_today</span>
+            </div>
+            <p id="stat-citas" class="text-4xl font-black text-[#000613]">—</p>
+            <p class="text-xs text-[#43474e] mt-1">reuniones agendadas</p>
+          </div>
+        </div>
+
+        <!-- Contenido principal: Candidatos recientes + Citas próximas -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <!-- Candidatos recientes (2/3) -->
+          <div class="lg:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#c4c6cf]/20">
+              <h2 class="font-black text-[#000613]">Candidatos Recientes</h2>
+              <a href="candidatos.html" class="text-xs font-bold text-[#115cb9] hover:underline">Ver todos</a>
+            </div>
+            <div id="candidatos-recientes">
+              <div class="flex justify-center py-10 text-[#43474e]">
+                <span class="material-symbols-outlined animate-spin" style="animation:spin 1s linear infinite; font-size:28px;">progress_activity</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Citas próximas (1/3) -->
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#c4c6cf]/20">
+              <h2 class="font-black text-[#000613]">Próximas Citas</h2>
+              <a href="agenda.html" class="text-xs font-bold text-[#115cb9] hover:underline">Ver agenda</a>
+            </div>
+            <div id="proximas-citas" class="p-4 space-y-3">
+              <div class="flex justify-center py-8 text-[#43474e]">
+                <span class="material-symbols-outlined animate-spin" style="animation:spin 1s linear infinite; font-size:28px;">progress_activity</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // ── Proteger la ruta (requiere auth)
+    requireAuth();
+
+    // ── Fecha actual
+    document.getElementById('dash-fecha').textContent =
+      new Date().toLocaleDateString('es-CO', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    // ── Cargar estadísticas desde Supabase
+    async function loadStats() {
+      const db = window.AE?.db;
+      if (!db) return loadDemoStats();
+
+      const hoy = new Date();
+      hoy.setHours(0,0,0,0);
+
+      const [vacantes, candidatosHoy, enProceso, citas] = await Promise.all([
+        db.from('vacantes').select('id', { count:'exact', head:true }).eq('estado','activa'),
+        db.from('aplicaciones').select('id', { count:'exact', head:true }).gte('created_at', hoy.toISOString()),
+        db.from('aplicaciones').select('id', { count:'exact', head:true }).in('estado', ['calificado','entrevista','terna']),
+        db.from('citas').select('id', { count:'exact', head:true }).gte('fecha_hora', hoy.toISOString()).eq('estado','pendiente'),
+      ]);
+
+      document.getElementById('stat-vacantes').textContent        = vacantes.count ?? 0;
+      document.getElementById('stat-candidatos-hoy').textContent  = candidatosHoy.count ?? 0;
+      document.getElementById('stat-en-proceso').textContent      = enProceso.count ?? 0;
+      document.getElementById('stat-citas').textContent           = citas.count ?? 0;
+
+      loadCandidatosRecientes(db);
+      loadProximasCitas(db);
+    }
+
+    async function loadCandidatosRecientes(db) {
+      const { data } = await db
+        .from('aplicaciones')
+        .select('id, nombre, apellido, email, estado, created_at, vacantes(titulo)')
+        .order('created_at', { ascending: false })
+        .limit(6);
+
+      const el = document.getElementById('candidatos-recientes');
+      if (!data?.length) {
+        el.innerHTML = '<p class="text-center py-8 text-sm text-[#43474e]">No hay candidatos aún.</p>';
+        return;
+      }
+
+      const estadoClases = {
+        recibido: 'background:#dbeafe;color:#1e40af',
+        calificado: 'background:#dcfce7;color:#166534',
+        entrevista: 'background:#fef9c3;color:#854d0e',
+        descartado: 'background:#fee2e2;color:#991b1b',
+        contratado: 'background:#001f3f;color:#ffffff',
+      };
+
+      el.innerHTML = data.map(c => `
+        <div class="flex items-center gap-4 px-6 py-3.5 border-t border-[#c4c6cf]/10 hover:bg-[#f1f4f6] transition-colors">
+          <div class="w-9 h-9 bg-[#115cb9]/10 rounded-full flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[#115cb9] text-base">person</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm text-[#181c1e] truncate">${c.nombre} ${c.apellido || ''}</p>
+            <p class="text-xs text-[#43474e] truncate">${c.vacantes?.titulo || 'Sin vacante'}</p>
+          </div>
+          <span class="chip text-[10px]" style="${estadoClases[c.estado] || 'background:#ebeef0;color:#43474e'}">${c.estado}</span>
+        </div>
+      `).join('');
+    }
+
+    async function loadProximasCitas(db) {
+      const { data } = await db
+        .from('citas')
+        .select('id, titulo, tipo, fecha_hora, estado')
+        .gte('fecha_hora', new Date().toISOString())
+        .order('fecha_hora', { ascending: true })
+        .limit(5);
+
+      const el = document.getElementById('proximas-citas');
+      if (!data?.length) {
+        el.innerHTML = '<p class="text-center py-8 text-sm text-[#43474e]">No hay citas próximas.</p>';
+        return;
+      }
+
+      el.innerHTML = data.map(c => {
+        const fecha = new Date(c.fecha_hora);
+        const hoy = new Date();
+        const esHoy = fecha.toDateString() === hoy.toDateString();
+        return `
+          <div class="flex gap-3 p-3 rounded-lg hover:bg-[#f1f4f6] transition-colors">
+            <div class="w-10 shrink-0 text-center">
+              <p class="text-lg font-black text-[#115cb9] leading-none">${fecha.getDate()}</p>
+              <p class="text-[10px] text-[#43474e] uppercase">${fecha.toLocaleString('es',{month:'short'})}</p>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-sm text-[#181c1e] truncate">${c.titulo}</p>
+              <p class="text-xs text-[#43474e]">${fecha.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})} ${esHoy ? '· Hoy' : ''}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function loadDemoStats() {
+      document.getElementById('stat-vacantes').textContent       = '3';
+      document.getElementById('stat-candidatos-hoy').textContent = '2';
+      document.getElementById('stat-en-proceso').textContent     = '7';
+      document.getElementById('stat-citas').textContent          = '1';
+      document.getElementById('candidatos-recientes').innerHTML  = '<p class="text-center py-8 text-sm text-[#43474e] opacity-60">Conecta Supabase para ver datos reales.</p>';
+      document.getElementById('proximas-citas').innerHTML        = '<p class="text-center py-8 text-sm text-[#43474e] opacity-60">Conecta Supabase para ver tu agenda.</p>';
+    }
+
+    loadStats();
+  </script>
+  <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+</body>
+</html>
