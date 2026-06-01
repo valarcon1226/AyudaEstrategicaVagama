@@ -9,7 +9,7 @@
   // Configuración de n8n para candidatos (Reemplazar con el Webhook real de n8n)
   window.AE = window.AE || {};
   window.AE.n8n = window.AE.n8n || {};
-  const WEBHOOK_CANDIDATOS = 'TU_N8N_WEBHOOK_CANDIDATOS_AQUI';
+  const WEBHOOK_CANDIDATOS = 'http://108.174.152.241:5678/webhook-test/7a7d9697-3d4e-4ae6-8b03-c54d868d5f02';
 
   const form = document.getElementById('apply-form');
   const fileInput = document.getElementById('f_cv');
