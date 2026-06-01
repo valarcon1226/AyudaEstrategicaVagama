@@ -87,76 +87,78 @@
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             vertical-align: middle;
         }
-
         .glass-nav {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
         }
-
         .hero-gradient {
             background: linear-gradient(to right, #001f3f, #000613);
         }
-
         .text-gradient {
             background: linear-gradient(135deg, #ffffff 0%, #00daf3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         @keyframes marquee {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
-
         .animate-marquee {
             animation: marquee 30s linear infinite;
         }
-
         .no-scrollbar::-webkit-scrollbar {
             display: none;
+        }
+        .tech-premium-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 31, 63, 0.1);
+        }
+        /* Toasts */
+        #success-toast, #error-toast {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .toast-hide {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            display: none;
+        }
+        .toast-enter {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            display: flex !important;
         }
     </style>
 </head>
 
 <body class="bg-surface font-body text-on-surface antialiased">
     <!-- TopNavBar -->
-    <nav
-        class="fixed top-0 w-full z-50 border-t-2 border-cyan-400 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-xl shadow-slate-900/5 dark:shadow-none">
+    <nav class="fixed top-0 w-full z-50 border-t-2 border-cyan-400 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-xl shadow-slate-900/5 dark:shadow-none">
         <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
             <div class="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white">
                 <img alt="Logo Ayuda Estratégica" class="h-10 w-auto" src="logo 1.png" />
                 <span class="tracking-tight">Ayuda Estratégica</span>
             </div>
             <div class="hidden md:flex items-center space-x-8 font-sans tracking-tight font-medium">
-                <a class="text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500 pb-1" href="index.html"
-                    id="nav-servicios">Servicios</a>
-                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-                    href="planes.html" id="nav-planes">Planes</a>
-                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-                    href="contacto.html" id="nav-contacto">Contacto</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" href="#servicios" id="nav-servicios">Servicios</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" href="#planes" id="nav-planes">Planes</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" href="#contacto" id="nav-contacto">Contacto</a>
             </div>
             <div class="flex items-center gap-4">
                 <a href="dashboard/login.html" class="hidden md:flex text-slate-600 dark:text-slate-400 hover:text-[#00daf3] transition-colors items-center gap-1 text-sm font-bold">
                     <span class="material-symbols-outlined text-[18px]">login</span> Panel
                 </a>
-                <a href="contacto.html" id="nav-cta-btn"
-                    class="bg-[#001f3f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:scale-95 active:opacity-80 transition-all duration-200">
+                <a href="#contacto" id="nav-cta-btn" class="bg-[#001f3f] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:scale-95 active:opacity-80 transition-all duration-200">
                     Hablar con un Estratega
                 </a>
             </div>
         </div>
     </nav>
+
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 overflow-hidden">
         <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div class="lg:col-span-8 z-10">
-                <div
-                    class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/20 text-secondary font-semibold text-xs uppercase tracking-widest rounded-full mb-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/20 text-secondary font-semibold text-xs uppercase tracking-widest rounded-full mb-6">
                     <span class="material-symbols-outlined text-sm">globe</span> Colombia, México y LatAm
                 </div>
                 <h1 class="text-6xl md:text-7xl font-extrabold text-primary tracking-tighter leading-[0.95] mb-8">
@@ -167,32 +169,29 @@
                     competitividad de su empresa en la región.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="contacto.html" id="hero-cta-primary"
-                        class="px-8 py-5 bg-secondary text-white rounded-lg font-bold text-lg shadow-lg hover:shadow-secondary/20 transition-all text-center">
+                    <a href="#contacto" id="hero-cta-primary" class="px-8 py-5 bg-secondary text-white rounded-lg font-bold text-lg shadow-lg hover:shadow-secondary/20 transition-all text-center">
                         Solicitar Consultoría Estratégica
                     </a>
-                    <a href="planes.html" id="hero-cta-secondary"
-                        class="px-8 py-5 border-b-2 border-surface-container-highest text-primary font-bold text-lg hover:border-tertiary-fixed-dim transition-all text-center">
-                        Ver Servicios
+                    <a href="#planes" id="hero-cta-secondary" class="px-8 py-5 border-b-2 border-surface-container-highest text-primary font-bold text-lg hover:border-tertiary-fixed-dim transition-all text-center">
+                        Ver Planes
                     </a>
                 </div>
             </div>
             <div class="lg:col-span-4 relative">
                 <div class="aspect-square bg-surface-container rounded-xl overflow-hidden shadow-2xl relative">
-                    <img alt="Strategic growth" class="w-full h-full object-cover"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh3YYxCKg4jxgStWbX_GK3ThU5uPeN0dGXiTvHo-fUvzj3hrD-6z2D5KgzNUE4aU5_AaKsrpsVB0DTl0pU11t05KOpTQ6cRwPVpyHiS08k7FUVDp57it_BiMCSwLpHMhfux-KdFb2H5rMsWB9SvrZvtxh1pk9rN5PjL8KrmDpl85AVO1_zVtNyVZQ5262ITHiTR3vAy7NE1Am1kO3LvbvGdLU2ghz7acHmSVnEFYt0oTQtAHtF8ngl7PaKk3Q4_z4gbP9WdV1F6U9t" />
+                    <img alt="Strategic growth" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh3YYxCKg4jxgStWbX_GK3ThU5uPeN0dGXiTvHo-fUvzj3hrD-6z2D5KgzNUE4aU5_AaKsrpsVB0DTl0pU11t05KOpTQ6cRwPVpyHiS08k7FUVDp57it_BiMCSwLpHMhfux-KdFb2H5rMsWB9SvrZvtxh1pk9rN5PjL8KrmDpl85AVO1_zVtNyVZQ5262ITHiTR3vAy7NE1Am1kO3LvbvGdLU2ghz7acHmSVnEFYt0oTQtAHtF8ngl7PaKk3Q4_z4gbP9WdV1F6U9t" />
                     <div class="absolute inset-0 bg-primary-container/20 mix-blend-overlay"></div>
                 </div>
                 <!-- Floating KPI -->
-                <div
-                    class="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-xl border-l-4 border-tertiary-fixed-dim">
+                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-xl border-l-4 border-tertiary-fixed-dim">
                     <p class="text-sm font-bold text-on-surface-variant uppercase">Efectividad</p>
                     <p class="text-4xl font-black text-primary">98.4%</p>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Value Prop Section (Metodología de Alto Impacto) -->
+
+    <!-- Value Prop Section -->
     <section class="py-32 bg-surface">
         <div class="max-w-7xl mx-auto px-8">
             <div class="mb-20">
@@ -201,116 +200,84 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Card 1 -->
-                <div
-                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all group">
+                <div class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all group">
                     <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">payments</span>
                     <h3 class="text-xl font-bold mb-4">ROI Enfocado</h3>
-                    <p class="text-on-surface-variant leading-relaxed">Optimizamos cada etapa del proceso para asegurar
-                        que su inversión en talento sea un activo financiero medible.</p>
+                    <p class="text-on-surface-variant leading-relaxed">Optimizamos cada etapa del proceso para asegurar que su inversión en talento sea un activo financiero medible.</p>
                 </div>
                 <!-- Card 2 -->
-                <div
-                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
+                <div class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
                     <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">trending_down</span>
                     <h3 class="text-xl font-bold mb-4">Reducción de Rotación</h3>
-                    <p class="text-on-surface-variant leading-relaxed">Utilizamos algoritmos de perfilación avanzada
-                        para encontrar el "match" perfecto de cultura y habilidades.</p>
+                    <p class="text-on-surface-variant leading-relaxed">Utilizamos algoritmos de perfilación avanzada para encontrar el "match" perfecto de cultura y habilidades.</p>
                 </div>
                 <!-- Card 3 -->
-                <div
-                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
+                <div class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
                     <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">bolt</span>
                     <h3 class="text-xl font-bold mb-4">Entrega Ágil</h3>
-                    <p class="text-on-surface-variant leading-relaxed">Nuestra red masiva en Colombia y México garantiza
-                        la cobertura de vacantes críticas en tiempos récord.</p>
+                    <p class="text-on-surface-variant leading-relaxed">Nuestra red masiva en Colombia y México garantiza la cobertura de vacantes críticas en tiempos récord.</p>
                 </div>
                 <!-- Card 4 -->
-                <div
-                    class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
+                <div class="bg-surface-container-low p-10 rounded-lg border-b-4 border-transparent hover:border-secondary transition-all">
                     <span class="material-symbols-outlined text-4xl text-secondary mb-6 block">gavel</span>
                     <h3 class="text-xl font-bold mb-4">Cumplimiento Legal</h3>
-                    <p class="text-on-surface-variant leading-relaxed">Blindamos su operación con una gestión rigurosa
-                        de normativas laborales internacionales y locales.</p>
+                    <p class="text-on-surface-variant leading-relaxed">Blindamos su operación con una gestión rigurosa de normativas laborales internacionales y locales.</p>
                 </div>
             </div>
         </div>
     </section>
+
     <!-- Logo Marquee -->
     <section class="py-16 bg-surface-container-low overflow-hidden border-y border-outline-variant/30">
-        <p class="text-center text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-12">Confían en
-            nuestra visión estratégica</p>
+        <p class="text-center text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-12">Confían en nuestra visión estratégica</p>
         <div class="flex animate-marquee whitespace-nowrap gap-16 items-center">
             <!-- First set -->
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Medycare</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Clínica
-                de Obesidad</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">DHI
-                Global</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Grupo
-                Jurídico Deudu</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Transportes
-                Rincón</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Bio-Estética</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Medycare</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Clínica de Obesidad</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">DHI Global</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Grupo Jurídico Deudu</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Transportes Rincón</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Bio-Estética</span>
             <!-- Duplicate for infinite effect -->
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Medycare</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Clínica
-                de Obesidad</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">DHI
-                Global</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Grupo
-                Jurídico Deudu</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Transportes
-                Rincón</span>
-            <span
-                class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Bio-Estética</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Medycare</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Clínica de Obesidad</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">DHI Global</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Grupo Jurídico Deudu</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Transportes Rincón</span>
+            <span class="text-2xl font-bold text-on-surface/30 hover:text-secondary grayscale hover:grayscale-0 transition-all cursor-default duration-300">Bio-Estética</span>
         </div>
     </section>
+
     <!-- Content / Bento Grid Services -->
-    <section class="py-32 bg-surface">
+    <section id="servicios" class="py-32 bg-surface">
         <div class="max-w-7xl mx-auto px-8">
             <div class="text-center mb-20">
                 <h2 class="text-4xl font-bold tracking-tight text-primary">Nuestras Unidades de Negocio</h2>
                 <div class="h-1 w-20 bg-secondary mx-auto mt-4"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
-                <div
-                    class="md:col-span-2 bg-surface-container-low rounded-lg p-10 flex flex-col justify-end shadow-sm hover:shadow-xl transition-all relative overflow-hidden group">
+                <div class="md:col-span-2 bg-surface-container-low rounded-lg p-10 flex flex-col justify-end shadow-sm hover:shadow-xl transition-all relative overflow-hidden group">
                     <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                         <span class="material-symbols-outlined text-9xl">group_add</span>
                     </div>
                     <h3 class="text-3xl font-bold text-primary mb-4">Reclutamiento Masivo</h3>
-                    <p class="text-on-surface-variant max-w-md">Capacidad técnica para movilizar cientos de perfiles
-                        operativos y tácticos en tiempo récord.</p>
+                    <p class="text-on-surface-variant max-w-md">Capacidad técnica para movilizar cientos de perfiles operativos y tácticos en tiempo récord.</p>
                 </div>
-                <div
-                    class="bg-secondary rounded-lg p-10 text-white flex flex-col justify-between hover:bg-primary transition-all">
+                <div class="bg-secondary rounded-lg p-10 text-white flex flex-col justify-between hover:bg-primary transition-all">
                     <span class="material-symbols-outlined text-4xl">verified_user</span>
                     <div>
                         <h3 class="text-2xl font-bold mb-2">Headhunting Elite</h3>
                         <p class="text-white/80 text-sm">C-Level y mandos medios con visión estratégica.</p>
                     </div>
                 </div>
-                <div
-                    class="bg-surface-container-low rounded-lg p-10 shadow-sm flex flex-col justify-between border-t-4 border-tertiary-fixed-dim">
+                <div class="bg-surface-container-low rounded-lg p-10 shadow-sm flex flex-col justify-between border-t-4 border-tertiary-fixed-dim">
                     <span class="material-symbols-outlined text-4xl text-tertiary-fixed-dim">analytics</span>
                     <div>
                         <h3 class="text-2xl font-bold text-primary mb-2">Auditoría RRHH</h3>
                         <p class="text-on-surface-variant text-sm">Diagnóstico y optimización de procesos internos.</p>
                     </div>
                 </div>
-                <div
-                    class="md:col-span-2 bg-primary-container text-white rounded-lg p-10 flex items-center gap-8 group">
+                <div class="md:col-span-2 bg-primary-container text-white rounded-lg p-10 flex items-center gap-8 group">
                     <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
                         <span class="material-symbols-outlined text-4xl">hub</span>
                     </div>
@@ -318,12 +285,290 @@
                         <h3 class="text-2xl font-bold mb-2">Outsourcing Integral</h3>
                         <p class="text-white/60">Gestión de nómina, bienestar y legal de principio a fin.</p>
                     </div>
-                    <span
-                        class="material-symbols-outlined ml-auto text-tertiary-fixed-dim group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                    <span class="material-symbols-outlined ml-auto text-tertiary-fixed-dim group-hover:translate-x-2 transition-transform">arrow_forward</span>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Pricing Comparison Grid -->
+    <section id="planes" class="py-32 bg-surface-container-low">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <span class="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">Estructura de Talento</span>
+                <h2 class="text-4xl md:text-5xl font-black text-primary leading-tight tracking-tighter mb-4">
+                    Planes de Inversión Estratégica
+                </h2>
+                <div class="h-1 w-20 bg-secondary mx-auto mt-4"></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Plan Silver -->
+                <div class="group relative bg-white rounded-lg p-10 transition-all duration-300 hover:shadow-xl flex flex-col border-b-4 border-transparent hover:border-secondary/20">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-primary mb-2">Plan Silver</h3>
+                        <p class="text-on-surface-variant text-sm font-medium">Ideal para reclutamiento masivo y perfiles operativos técnicos.</p>
+                    </div>
+                    <div class="mb-10 flex items-baseline gap-2">
+                        <span class="text-4xl font-black text-primary tracking-tighter">Inversión</span>
+                        <span class="text-on-surface-variant font-medium">/ por vacante</span>
+                    </div>
+                    <div class="space-y-6 flex-grow mb-12">
+                        <div class="flex items-start gap-4">
+                            <span class="material-symbols-outlined text-secondary text-xl" data-icon="groups">groups</span>
+                            <div>
+                                <p class="font-bold text-on-surface">Volume Recruitment</p>
+                                <p class="text-sm text-on-surface-variant">Gestión ágil para múltiples posiciones simultáneas.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="material-symbols-outlined text-secondary text-xl" data-icon="description">description</span>
+                            <div>
+                                <p class="font-bold text-on-surface">6-10 CVs Validados</p>
+                                <p class="text-sm text-on-surface-variant">Pre-filtrado riguroso de perfiles calificados.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="material-symbols-outlined text-secondary text-xl" data-icon="schedule">schedule</span>
+                            <div>
+                                <p class="font-bold text-on-surface">5-7 Días Entrega</p>
+                                <p class="text-sm text-on-surface-variant">Velocidad táctica en la presentación de ternas.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="material-symbols-outlined text-secondary text-xl" data-icon="verified_user">verified_user</span>
+                            <div>
+                                <p class="font-bold text-on-surface">2 Meses Garantía</p>
+                                <p class="text-sm text-on-surface-variant">Respaldo total por reemplazo de candidato.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#contacto" class="w-full bg-surface border border-outline-variant text-primary font-bold py-5 rounded-lg hover:bg-primary-container hover:text-on-primary transition-all duration-300 text-center block">
+                        Seleccionar Plan
+                    </a>
+                </div>
+                <!-- Plan Gold Elite (Featured) -->
+                <div class="relative bg-primary-container text-on-primary rounded-lg p-10 flex flex-col shadow-[0_40px_80px_rgba(0,31,63,0.12)] overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-[#00DAF3]/10 blur-[100px] -mr-32 -mt-32"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-8">
+                            <div>
+                                <span class="inline-block bg-[#00DAF3] text-primary-container text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-4">Destacado</span>
+                                <h3 class="text-3xl font-bold text-white mb-2">Gold Elite</h3>
+                                <p class="text-on-primary-container text-sm font-medium">Búsqueda ejecutiva y perfiles de alta gerencia.</p>
+                            </div>
+                            <span class="material-symbols-outlined text-[#00DAF3] text-4xl" data-icon="diamond" style="font-variation-settings: 'FILL' 1;">diamond</span>
+                        </div>
+                        <div class="mb-10 flex items-baseline gap-2">
+                            <span class="text-4xl font-black text-white tracking-tighter">Inversión Premium</span>
+                        </div>
+                        <div class="space-y-6 flex-grow mb-12">
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-[#00DAF3] text-xl" data-icon="psychology">psychology</span>
+                                <div>
+                                    <p class="font-bold text-white">Selección por Competencias</p>
+                                    <p class="text-sm text-on-primary-container">Mapeo profundo de habilidades blandas y técnicas.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-[#00DAF3] text-xl" data-icon="monitoring">monitoring</span>
+                                <div>
+                                    <p class="font-bold text-white">Psicotécnicos &amp; Entrevistas</p>
+                                    <p class="text-sm text-on-primary-container">Evaluación multidimensional de personalidad y potencial.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-[#00DAF3] text-xl" data-icon="bolt">bolt</span>
+                                <div>
+                                    <p class="font-bold text-white">3-5 Días Entrega</p>
+                                    <p class="text-sm text-on-primary-container">Prioridad máxima en procesos críticos de negocio.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-[#00DAF3] text-xl" data-icon="security">security</span>
+                                <div>
+                                    <p class="font-bold text-white">4 Meses Garantía</p>
+                                    <p class="text-sm text-on-primary-container">Seguridad extendida para sus posiciones clave.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#contacto" class="w-full bg-gradient-to-r from-[#00DAF3] to-[#115cb9] text-primary-container font-black py-5 rounded-lg hover:scale-[1.02] transition-transform duration-300 text-center block">
+                            Seleccionar Plan
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Metodología AE Section -->
+            <div class="mt-32 flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+                <div class="lg:w-1/3 bg-white rounded-lg p-10 flex flex-col justify-center border border-outline-variant/10 shadow-sm">
+                    <h2 class="text-3xl font-black text-primary mb-6">Metodología AE</h2>
+                    <p class="text-on-surface-variant leading-relaxed font-medium">
+                        Utilizamos algoritmos de filtrado propios combinados con la intuición experta de Aida Gamboa para
+                        asegurar el fit cultural perfecto.
+                    </p>
+                </div>
+                <div class="lg:w-2/3 bg-white rounded-lg p-12 border border-outline-variant/10 shadow-sm flex flex-col md:flex-row items-center justify-around gap-12 text-center">
+                    <div class="flex-1">
+                        <span class="block text-4xl lg:text-5xl font-black text-primary mb-2">98%</span>
+                        <span class="text-[10px] lg:text-xs font-black text-secondary tracking-widest uppercase">Retención de Talento</span>
+                    </div>
+                    <div class="hidden md:block w-px h-16 bg-outline-variant/30"></div>
+                    <div class="flex-1">
+                        <span class="block text-4xl lg:text-5xl font-black text-primary mb-2">+500</span>
+                        <span class="text-[10px] lg:text-xs font-black text-secondary tracking-widest uppercase">Cargos Cerrados</span>
+                    </div>
+                    <div class="hidden md:block w-px h-16 bg-outline-variant/30"></div>
+                    <div class="flex-1">
+                        <span class="block text-4xl lg:text-5xl font-black text-primary mb-2">24/7</span>
+                        <span class="text-[10px] lg:text-xs font-black text-secondary tracking-widest uppercase">Soporte Estratégico</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form & Info -->
+    <section id="contacto" class="py-32 bg-surface">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="mb-16 text-center lg:text-left">
+                <h2 class="text-5xl lg:text-6xl font-black text-primary-container leading-tight tracking-tighter mb-4">
+                    Contacto <span class="text-secondary">Profesional</span>
+                </h2>
+                <p class="text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+                    Estamos aquí para potenciar su capital humano. Elija el canal que mejor se adapte a su necesidad actual.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Section 1: Formulario para Nuevos Clientes -->
+                <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-[24px] p-8 lg:p-12 tech-premium-shadow border border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="bg-secondary/10 p-3 rounded-xl text-secondary">
+                            <span class="material-symbols-outlined text-3xl">person_add</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary-container dark:text-white">Nuevos Clientes</h3>
+                            <p class="text-sm text-on-surface-variant">Inicie su transformación organizacional hoy</p>
+                        </div>
+                    </div>
+                    <form class="space-y-6" id="contact-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="empresa">Nombre de la Empresa</label>
+                                <input id="empresa" required class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-secondary transition-all outline-none" placeholder="Ej. Corporación Global" type="text" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="pais">País</label>
+                                <select id="pais" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-secondary transition-all outline-none">
+                                    <option value="Colombia">Colombia</option>
+                                    <option value="México">México</option>
+                                    <option value="Chile">Chile</option>
+                                    <option value="Perú">Perú</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="plan">Plan de Interés (Opcional)</label>
+                            <select id="plan" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-secondary transition-all outline-none">
+                                <option value="Aún no sé">Aún no sé</option>
+                                <option value="Silver">Plan Silver</option>
+                                <option value="Gold Elite">Plan Gold Elite</option>
+                                <option value="Auditoría">Auditoría RRHH</option>
+                                <option value="Outsourcing">Outsourcing Integral</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="cargos">Cargos Requeridos</label>
+                            <textarea id="cargos" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-secondary transition-all outline-none" placeholder="Describa los perfiles que busca reclutar o áreas de consultoría..." rows="4"></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider ml-1" for="email">Información de contacto (Email)</label>
+                            <input id="email" required class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-secondary transition-all outline-none" placeholder="correo@empresa.com" type="email" />
+                        </div>
+                        <div class="pt-4">
+                            <button id="submit-btn" type="submit" class="w-full bg-primary-container text-white px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                                Agendar Cita de Consultoría
+                                <span class="material-symbols-outlined">calendar_today</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Section 2: Clientes Actuales & Buzón Directo -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div class="bg-primary-container text-white rounded-[24px] p-10 relative overflow-hidden flex flex-col tech-premium-shadow">
+                        <div class="absolute top-0 right-0 p-8 opacity-5">
+                            <span class="material-symbols-outlined text-[140px]">support_agent</span>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-4 mb-8">
+                                <div class="bg-cyan-400 p-3 rounded-xl text-primary-container">
+                                    <span class="material-symbols-outlined font-bold">verified</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">Clientes Actuales</h3>
+                                    <p class="text-cyan-400/80 text-sm">Canales de soporte prioritario</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-300 text-lg mb-10 leading-relaxed">
+                                Para una atención inmediata sobre procesos activos, PQRs o sugerencias estratégicas.
+                            </p>
+                            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 mb-4">
+                                <div class="flex items-center gap-5 mb-6">
+                                    <img alt="Portrait of Aida Gamboa" class="w-20 h-20 rounded-full object-cover border-4 border-cyan-400/30" src="foto aida.jpg" />
+                                    <div>
+                                        <p class="text-cyan-400 font-bold text-xs tracking-widest uppercase mb-1">Dirección General</p>
+                                        <p class="font-bold text-2xl">Aida Gamboa</p>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-slate-300 mb-8 italic leading-relaxed">
+                                    "Nuestro Buzón Directo garantiza que su feedback llegue a la alta gerencia sin filtros, asegurando la excelencia operativa."
+                                </p>
+                                <a class="group inline-flex items-center gap-3 bg-cyan-400 text-primary-container px-6 py-3 rounded-xl font-bold hover:bg-white transition-all w-full justify-center" href="mailto:direccion@ayudaestrategica.com" id="buzon-directo-btn">
+                                    Buzón Directo PQRs
+                                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">mail</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Additional Contact Info -->
+                    <div class="bg-white border border-slate-100 rounded-[24px] p-8 tech-premium-shadow shadow-sm">
+                        <h4 class="text-xs font-black text-on-surface-variant uppercase tracking-widest mb-6">Oficinas Centrales</h4>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <span class="material-symbols-outlined text-secondary">location_on</span>
+                                <div>
+                                    <p class="font-bold text-primary-container">Bogotá, Colombia</p>
+                                    <p class="text-sm text-on-surface-variant">Hub Administrativo LatAm</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="material-symbols-outlined text-secondary">location_on</span>
+                                <div>
+                                    <p class="font-bold text-primary-container">CDMX, México</p>
+                                    <p class="text-sm text-on-surface-variant">Centro de Reclutamiento Estratégico</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Toast -->
+    <div id="success-toast" class="toast-hide fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-green-600 text-white px-8 py-4 rounded-full shadow-2xl font-bold text-sm">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span data-toast-message>Su solicitud fue enviada. Le contactaremos pronto.</span>
+    </div>
+    <!-- Error Toast -->
+    <div id="error-toast" class="toast-hide fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-red-600 text-white px-8 py-4 rounded-full shadow-2xl font-bold text-sm">
+        <span class="material-symbols-outlined">error</span>
+        <span data-toast-message>Ocurrió un error.</span>
+    </div>
+
     <!-- Footer -->
     <footer class="w-full border-t border-slate-200/10 bg-slate-50 dark:bg-slate-950">
         <div class="flex flex-col md:flex-row justify-between items-center py-12 px-8 max-w-7xl mx-auto">
@@ -331,25 +576,30 @@
                 Ayuda Estratégica
             </div>
             <div class="flex flex-wrap justify-center gap-8 text-sm font-sans tracking-wide uppercase">
-                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100"
-                    href="#">Privacidad</a>
-                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100"
-                    href="#">Términos</a>
-                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100"
-                    href="https://www.linkedin.com/in/seleccion-ayuda-estrategica/" target="_blank">LinkedIn</a>
+                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100" href="#">Privacidad</a>
+                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100" href="#">Términos</a>
+                <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-400 transition-colors hover:underline decoration-cyan-400 decoration-2 underline-offset-4 opacity-80 hover:opacity-100" href="https://www.linkedin.com/in/seleccion-ayuda-estrategica/" target="_blank">LinkedIn</a>
             </div>
             <div class="mt-8 md:mt-0 text-slate-500 dark:text-slate-400 text-xs">
                 © 2019 Ayuda Estratégica. Todos los derechos reservados.
             </div>
         </div>
     </footer>
+
     <!-- FAB -->
     <div class="fixed bottom-8 right-8 z-40">
-        <a href="contacto.html" id="fab-chat-btn"
-            class="w-16 h-16 bg-secondary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group">
+        <a href="#contacto" id="fab-chat-btn" class="w-16 h-16 bg-secondary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group">
             <span class="material-symbols-outlined text-3xl">chat</span>
         </a>
     </div>
-</body>
 
+    <!-- Scripts -->
+    <script>
+        window.AE = window.AE || {};
+        window.AE.n8n = {
+            WEBHOOK_LEADS: 'TU_N8N_WEBHOOK_AQUI'
+        };
+    </script>
+    <script src="js/contact-form.js"></script>
+</body>
 </html>
