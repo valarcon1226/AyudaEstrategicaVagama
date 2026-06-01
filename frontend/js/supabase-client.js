@@ -10,8 +10,8 @@
  */
 
 // ─── Configuración ───────────────────────────────────────────
-const SUPABASE_URL      = 'https://TU_PROYECTO.supabase.co';  // ← reemplazar
-const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';                // ← reemplazar
+const SUPABASE_URL      = 'https://mrwxqnqieemykkxlylkr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_4FNzCfISif9FQkrxAO2cMA_IykrXWEP';
 
 // Carga el cliente de Supabase (via CDN en el HTML)
 // <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
