@@ -179,7 +179,7 @@
           
           // --- NUEVO: Enviar a n8n via Vercel Serverless Function ---
           try {
-            const proxyRes = await fetch('/api/n8n-proxy', {
+            const proxyRes = await fetch('https://www.ayudaestrategica.com/api/n8n-proxy', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)
