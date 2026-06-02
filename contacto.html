@@ -305,14 +305,29 @@
     </footer>
 
     <script>
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
+            const originalContent = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Enviando...';
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="animation: spin 1s linear infinite;">progress_activity</span> Enviando...';
 
-            // Simulate async send
-            setTimeout(() => {
+            const payload = {
+                empresa: document.getElementById('f_empresa').value,
+                pais: document.getElementById('f_pais').value,
+                cargos: document.getElementById('f_cargos').value,
+                email: document.getElementById('f_email').value
+            };
+
+            try {
+                const res = await fetch('https://www.ayudaestrategica.com/api/n8n-proxy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!res.ok) throw new Error('Error enviando formulario');
+
                 btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Solicitud enviada';
                 btn.classList.remove('bg-primary-container');
                 btn.classList.add('bg-secondary');
@@ -326,11 +341,16 @@
                 // Reset button after delay
                 setTimeout(() => {
                     btn.disabled = false;
-                    btn.innerHTML = 'Agendar Cita de Consultoría <span class="material-symbols-outlined">calendar_today</span>';
+                    btn.innerHTML = originalContent;
                     btn.classList.add('bg-primary-container');
                     btn.classList.remove('bg-secondary');
                 }, 5000);
-            }, 1500);
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+                alert('Ocurrió un error. Intenta nuevamente.');
+            }
         }
     </script>
 </body>
