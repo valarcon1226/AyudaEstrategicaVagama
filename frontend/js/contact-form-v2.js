@@ -47,8 +47,7 @@
       const db = window.AE?.db;
 
       if (!db) {
-        console.warn('[AE] Supabase no configurado — modo demo');
-        await sleep(1200);
+        console.warn('[AE] Supabase no configurado — ignorando guardado en base de datos');
       } else {
         const { error } = await db
           .from('leads_empresas')
@@ -63,23 +62,23 @@
           ]);
 
         if (error) {
-          throw new Error(`Supabase Error: ${error.message}`);
+          console.error(`[AE] Supabase Error: ${error.message}`);
         }
+      }
+      
+      // --- 5. Siempre enviar a n8n via Vercel Serverless Function ---
+      try {
+        const proxyRes = await fetch('https://www.ayudaestrategica.com/api/n8n-proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
         
-        // --- 5. Enviar a n8n via Vercel Serverless Function ---
-        try {
-          const proxyRes = await fetch('https://www.ayudaestrategica.com/api/n8n-proxy', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-          
-          if (!proxyRes.ok) {
-            console.warn('[AE] El proxy a n8n falló, pero los datos se guardaron en Supabase.');
-          }
-        } catch (proxyErr) {
-          console.warn('[AE] Error conectando con el proxy de Vercel:', proxyErr);
+        if (!proxyRes.ok) {
+          console.warn('[AE] El proxy a n8n falló.');
         }
+      } catch (proxyErr) {
+        console.warn('[AE] Error conectando con el proxy de Vercel:', proxyErr);
       }
 
       // ── 5. Éxito

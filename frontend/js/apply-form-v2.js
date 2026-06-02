@@ -159,38 +159,54 @@
             edad: parseInt(document.getElementById('f_edad').value, 10),
             nacionalidad: document.getElementById('f_nacionalidad').value,
             estado_civil: document.getElementById('f_estado_civil').value,
-            ciudad: document.getElementById('f_ciudad').value,
-            barrio: document.getElementById('f_barrio').value,
-            nivel_estudios: document.getElementById('f_nivel_estudios').value,
-            anios_exp: parseFloat(document.getElementById('f_anios_exp').value),
-            experiencia_laboral: document.getElementById('f_experiencia_laboral').value,
-            situacion_actual: document.getElementById('f_situacion_actual').value,
-            idiomas: document.getElementById('f_idiomas').value,
-            nivel_idioma: document.getElementById('f_nivel_idioma').value,
-            aspiracion: document.getElementById('f_aspiracion').value,
-            cv_url: cvUrl
-          };
+        }
 
+        // B. Preparar Payload
+        const payload = {
+          vacante_id: currentJobId || 'general',
+          vacante_titulo: currentJobTitle,
+          nombre: document.getElementById('f_nombre').value,
+          telefono: document.getElementById('f_telefono').value,
+          correo: document.getElementById('f_correo').value,
+          edad: parseInt(document.getElementById('f_edad').value, 10),
+          nacionalidad: document.getElementById('f_nacionalidad').value,
+          estado_civil: document.getElementById('f_estado_civil').value,
+          ciudad: document.getElementById('f_ciudad').value,
+          barrio: document.getElementById('f_barrio').value,
+          nivel_estudios: document.getElementById('f_nivel_estudios').value,
+          anios_exp: parseFloat(document.getElementById('f_anios_exp').value),
+          experiencia_laboral: document.getElementById('f_experiencia_laboral').value,
+          situacion_actual: document.getElementById('f_situacion_actual').value,
+          idiomas: document.getElementById('f_idiomas').value,
+          nivel_idioma: document.getElementById('f_nivel_idioma').value,
+          aspiracion: document.getElementById('f_aspiracion').value,
+          cv_url: cvUrl
+        };
+
+        // C. Guardar en Supabase
+        if (!db) {
+          console.warn('[AE] Supabase no configurado — ignorando guardado en base de datos');
+        } else {
           const { error: insertError } = await db
             .from('postulaciones')
             .insert([payload]);
 
           if (insertError) throw new Error(`Error guardando datos: ${insertError.message}`);
+        }
           
-          // --- NUEVO: Enviar a n8n via Vercel Serverless Function ---
-          try {
-            const proxyRes = await fetch('https://www.ayudaestrategica.com/api/n8n-proxy', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            
-            if (!proxyRes.ok) {
-              console.warn('[AE] El proxy a n8n falló, pero la postulación se guardó en Supabase.');
-            }
-          } catch (proxyErr) {
-            console.warn('[AE] Error conectando con el proxy de Vercel:', proxyErr);
+        // --- D. Siempre enviar a n8n via Vercel Serverless Function ---
+        try {
+          const proxyRes = await fetch('https://www.ayudaestrategica.com/api/n8n-proxy', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          if (!proxyRes.ok) {
+            console.warn('[AE] El proxy a n8n falló.');
           }
+        } catch (proxyErr) {
+          console.warn('[AE] Error conectando con el proxy de Vercel:', proxyErr);
         }
 
         // Mostrar éxito
