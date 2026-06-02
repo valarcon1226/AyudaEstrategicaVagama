@@ -176,6 +176,21 @@
             .insert([payload]);
 
           if (insertError) throw new Error(`Error guardando datos: ${insertError.message}`);
+          
+          // --- NUEVO: Enviar a n8n via Vercel Serverless Function ---
+          try {
+            const proxyRes = await fetch('/api/n8n-proxy', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            
+            if (!proxyRes.ok) {
+              console.warn('[AE] El proxy a n8n falló, pero la postulación se guardó en Supabase.');
+            }
+          } catch (proxyErr) {
+            console.warn('[AE] Error conectando con el proxy de Vercel:', proxyErr);
+          }
         }
 
         // Mostrar éxito
