@@ -20,8 +20,9 @@ export default async function handler(req, res) {
   try {
     const payload = req.body;
     
-    // URL del webhook de n8n de prueba (DigitalOcean)
-    const webhookUrl = 'http://108.174.152.241:5678/webhook-test/7a7d9697-3d4e-4ae6-8b03-c54d868d5f02';
+    // URL del webhook de n8n de producción (DigitalOcean)
+    // Usamos el de producción para no depender del botón "Listen for test event"
+    const webhookUrl = 'http://108.174.152.241:5678/webhook/7a7d9697-3d4e-4ae6-8b03-c54d868d5f02';
     
     const response = await fetch(webhookUrl, {
       method: 'POST',
