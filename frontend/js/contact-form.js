@@ -43,22 +43,27 @@
     setLoading(btn, true);
 
     try {
-      // ── 4. Enviar al webhook n8n (Flow 3)
-      const webhookUrl = window.AE?.n8n?.WEBHOOK_LEADS;
+      // ── 4. Guardar en Supabase (El puente a n8n)
+      const db = window.AE?.db;
 
-      if (!webhookUrl || webhookUrl.includes('TU_N8N')) {
-        // Modo demo: simular éxito si no hay webhook configurado
-        console.warn('[AE] n8n webhook no configurado — modo demo');
+      if (!db) {
+        console.warn('[AE] Supabase no configurado — modo demo');
         await sleep(1200);
       } else {
-        const res = await fetch(webhookUrl, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload),
-        });
+        const { error } = await db
+          .from('leads_empresas')
+          .insert([
+            {
+              empresa: payload.empresa,
+              pais: payload.pais,
+              email: payload.email,
+              cargos: payload.cargos,
+              plan_interes: payload.plan_interes
+            }
+          ]);
 
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+        if (error) {
+          throw new Error(`Supabase Error: ${error.message}`);
         }
       }
 

@@ -6,10 +6,7 @@
 (function () {
   'use strict';
 
-  // Configuración de n8n para candidatos (Reemplazar con el Webhook real de n8n)
-  window.AE = window.AE || {};
-  window.AE.n8n = window.AE.n8n || {};
-  const WEBHOOK_CANDIDATOS = 'http://108.174.152.241:5678/webhook-test/7a7d9697-3d4e-4ae6-8b03-c54d868d5f02';
+  // El webhook directo de n8n se elimina porque ahora usamos Supabase como puente.
 
   const form = document.getElementById('apply-form');
   const fileInput = document.getElementById('f_cv');
@@ -121,25 +118,64 @@
       submitBtn.classList.add('opacity-75');
 
       try {
-        // Crear FormData para enviar tanto los campos de texto como el archivo binario
-        const formData = new FormData(form);
-        
-        // Agregar campos del sistema
-        formData.append('fecha_aplicacion', new Date().toISOString());
-        formData.append('vacante_id', currentJobId || 'general');
-        formData.append('vacante_titulo', currentJobTitle);
-
-        // Enviar al Webhook de n8n
-        if (WEBHOOK_CANDIDATOS.includes('TU_N8N')) {
-          console.warn('[AE] Webhook de n8n no configurado. Simulando envío en modo demo...');
+        // ── 4. Puente: Guardar en Supabase 
+        const db = window.AE?.db;
+        if (!db) {
+          console.warn('[AE] Supabase no configurado. Simulando envío en modo demo...');
           await new Promise(r => setTimeout(r, 1500)); // Simular delay
         } else {
-          const res = await fetch(WEBHOOK_CANDIDATOS, {
-            method: 'POST',
-            body: formData // No setear Content-Type, el navegador lo hace automáticamente para FormData
-          });
+          // A. Subir el archivo (CV) al bucket
+          const cvFile = fileInput.files[0];
+          let cvUrl = '';
+          
+          if (cvFile) {
+            const fileExt = cvFile.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+            const filePath = `candidatos/${fileName}`;
+            
+            const { data: uploadData, error: uploadError } = await db
+              .storage
+              .from('hojas_de_vida')
+              .upload(filePath, cvFile);
+              
+            if (uploadError) throw new Error(`Error subiendo CV: ${uploadError.message}`);
+            
+            // Obtener URL pública
+            const { data: publicUrlData } = db
+              .storage
+              .from('hojas_de_vida')
+              .getPublicUrl(filePath);
+              
+            cvUrl = publicUrlData.publicUrl;
+          }
 
-          if (!res.ok) throw new Error('Error en la respuesta del servidor');
+          // B. Guardar los datos en la tabla postulaciones
+          const payload = {
+            vacante_id: currentJobId || 'general',
+            vacante_titulo: currentJobTitle,
+            nombre: document.getElementById('f_nombre').value,
+            telefono: document.getElementById('f_telefono').value,
+            correo: document.getElementById('f_correo').value,
+            edad: parseInt(document.getElementById('f_edad').value, 10),
+            nacionalidad: document.getElementById('f_nacionalidad').value,
+            estado_civil: document.getElementById('f_estado_civil').value,
+            ciudad: document.getElementById('f_ciudad').value,
+            barrio: document.getElementById('f_barrio').value,
+            nivel_estudios: document.getElementById('f_nivel_estudios').value,
+            anios_exp: parseFloat(document.getElementById('f_anios_exp').value),
+            experiencia_laboral: document.getElementById('f_experiencia_laboral').value,
+            situacion_actual: document.getElementById('f_situacion_actual').value,
+            idiomas: document.getElementById('f_idiomas').value,
+            nivel_idioma: document.getElementById('f_nivel_idioma').value,
+            aspiracion: document.getElementById('f_aspiracion').value,
+            cv_url: cvUrl
+          };
+
+          const { error: insertError } = await db
+            .from('postulaciones')
+            .insert([payload]);
+
+          if (insertError) throw new Error(`Error guardando datos: ${insertError.message}`);
         }
 
         // Mostrar éxito
