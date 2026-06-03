@@ -21,6 +21,7 @@
     const payload = {
       source:       'web-landing-contacto',
       timestamp:    new Date().toISOString(),
+      nombre:       document.getElementById('nombre')?.value?.trim() || '',
       empresa:      document.getElementById('empresa')?.value?.trim() || '',
       pais:         document.getElementById('pais')?.value || '',
       email:        document.getElementById('email')?.value?.trim() || '',
@@ -53,6 +54,7 @@
           .from('leads_empresas')
           .insert([
             {
+              nombre: payload.nombre,
               empresa: payload.empresa,
               pais: payload.pais,
               email: payload.email,
