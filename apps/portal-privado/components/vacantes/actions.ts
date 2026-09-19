@@ -33,6 +33,12 @@ export async function createVacancyAction(formData: FormData) {
   const hideSalary = formData.get("hideSalary") === "on";
   const hideClient = formData.get("hideClient") === "on";
 
+  const minExperienceYearsRaw = String(formData.get("minExperienceYears") ?? "").trim();
+  const minEducationLevel = String(formData.get("minEducationLevel") ?? "").trim() || undefined;
+  const salaryMinRaw = String(formData.get("salaryMin") ?? "").trim();
+  const salaryMaxRaw = String(formData.get("salaryMax") ?? "").trim();
+  const requiredExcelLevel = String(formData.get("requiredExcelLevel") ?? "").trim() || undefined;
+
   if (!title || !sector || !city) return;
 
   await createVacancy({
@@ -46,6 +52,11 @@ export async function createVacancyAction(formData: FormData) {
     status: "abierta",
     hideSalary,
     hideClientCompany: hideClient,
+    minExperienceYears: minExperienceYearsRaw ? Number(minExperienceYearsRaw) : undefined,
+    minEducationLevel,
+    salaryMin: salaryMinRaw ? Number(salaryMinRaw) : undefined,
+    salaryMax: salaryMaxRaw ? Number(salaryMaxRaw) : undefined,
+    requiredExcelLevel,
   });
   revalidatePath("/");
 }

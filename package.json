@@ -4,5 +4,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "postinstall": "prisma generate --schema=packages/shared/prisma/schema.prisma"
+  }
 }

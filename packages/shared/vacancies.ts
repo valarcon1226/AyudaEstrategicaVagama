@@ -43,6 +43,13 @@ export async function createVacancy(data: {
   status?: string;
   hideSalary: boolean;
   hideClientCompany: boolean;
+  // Criterios objetivo para el filtro de puntuación de postulaciones — todos
+  // opcionales; si no se llenan, ese criterio simplemente no puntúa.
+  minExperienceYears?: number;
+  minEducationLevel?: string;
+  salaryMin?: number;
+  salaryMax?: number;
+  requiredExcelLevel?: string;
 }): Promise<Vacancy> {
   return prisma.vacancy.create({
     data: {
@@ -54,6 +61,11 @@ export async function createVacancy(data: {
       salaryRange: data.salaryRange,
       mission: data.mission,
       status: data.status ?? "abierta",
+      minExperienceYears: data.minExperienceYears,
+      minEducationLevel: data.minEducationLevel,
+      salaryMin: data.salaryMin,
+      salaryMax: data.salaryMax,
+      requiredExcelLevel: data.requiredExcelLevel,
       visibleFields: {
         salaryRange: !data.hideSalary,
         clientCompany: !data.hideClientCompany,

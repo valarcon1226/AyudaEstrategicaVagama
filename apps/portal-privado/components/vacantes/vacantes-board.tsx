@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import Link from "next/link";
 import { isFieldHidden, type Vacancy, type VacancyVisibleFields } from "@shared/vacancy-types";
 import { SECTORS } from "@shared/site-content";
 import { createVacancyAction, setVacancyStatusAction, toggleFieldHiddenAction } from "./actions";
@@ -17,7 +18,13 @@ const STATUS_TONE: Record<string, string> = {
   cerrada: "bg-surface-container-low text-secondary",
 };
 
-export function VacantesBoard({ vacancies }: { vacancies: Vacancy[] }) {
+export function VacantesBoard({
+  vacancies,
+  applicationCounts,
+}: {
+  vacancies: Vacancy[];
+  applicationCounts: Record<string, number>;
+}) {
   const [sectorFilter, setSectorFilter] = useState<string>("Todas");
   const [search, setSearch] = useState("");
   const [newOpen, setNewOpen] = useState(false);
@@ -157,6 +164,14 @@ export function VacantesBoard({ vacancies }: { vacancies: Vacancy[] }) {
               {v.mission && (
                 <p className="font-body-sm text-body-sm text-on-surface-variant">{v.mission}</p>
               )}
+
+              <Link
+                href={`/postulaciones/${v.id}`}
+                className="mt-auto inline-flex items-center justify-center gap-2 bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md px-3 py-2 rounded-lg transition-colors"
+              >
+                <span className="material-symbols-outlined text-[18px]">groups</span>
+                {applicationCounts[v.id] ?? 0} postulación{(applicationCounts[v.id] ?? 0) === 1 ? "" : "es"}
+              </Link>
             </div>
           ))}
           {filtered.length === 0 && (
@@ -243,6 +258,50 @@ export function VacantesBoard({ vacancies }: { vacancies: Vacancy[] }) {
                   <input type="checkbox" name="hideClient" defaultChecked className="accent-primary" />
                   Ocultar nombre del cliente al público (recomendado)
                 </label>
+              </div>
+
+              <div className="flex flex-col gap-space-sm bg-surface-container-low p-3 rounded-lg">
+                <span className="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wide text-[11px]">
+                  Criterios de filtro (opcional) — para puntuar postulaciones
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface mb-1">Años mínimos de experiencia</label>
+                    <input name="minExperienceYears" type="number" step="0.5" min={0} className="w-full h-10 px-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-md focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface mb-1">Nivel de estudios mínimo</label>
+                    <select name="minEducationLevel" className="w-full h-10 px-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-md focus:outline-none">
+                      <option value="">Sin definir</option>
+                      <option>Bachiller</option>
+                      <option>Técnico</option>
+                      <option>Tecnólogo</option>
+                      <option>Profesional</option>
+                      <option>Especialización</option>
+                      <option>Maestría</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface mb-1">Salario mínimo presupuestado</label>
+                    <input name="salaryMin" type="number" min={0} className="w-full h-10 px-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-md focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface mb-1">Salario máximo presupuestado</label>
+                    <input name="salaryMax" type="number" min={0} className="w-full h-10 px-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-md focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface mb-1">Nivel de Excel requerido</label>
+                    <select name="requiredExcelLevel" className="w-full h-10 px-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-md focus:outline-none">
+                      <option value="">Sin definir</option>
+                      <option>Básico</option>
+                      <option>Intermedio</option>
+                      <option>Avanzado</option>
+                    </select>
+                  </div>
+                </div>
+                <p className="font-body-sm text-[11px] text-secondary">
+                  Lo que dejes en blanco no se usa para puntuar — no penaliza a los candidatos.
+                </p>
               </div>
               <div className="flex items-center justify-end gap-3 pt-space-xs">
                 <button type="button" onClick={() => setNewOpen(false)} className="px-4 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors">

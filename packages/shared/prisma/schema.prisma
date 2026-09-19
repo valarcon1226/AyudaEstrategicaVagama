@@ -42,7 +42,7 @@ model Vacancy {
 
   mission     String? // Misión del cargo
 
-  // Requisitos / perfil
+  // Requisitos / perfil (texto libre, para mostrar en la vacante)
   requiredStudies String?
   minExperience   String?
   competencies    String?
@@ -50,6 +50,15 @@ model Vacancy {
   wordLevel       String?
   englishLevel    String?
   otherLanguage   String?
+
+  // Versión estructurada de los mismos requisitos, solo para el filtro de
+  // puntuación ponderada de postulaciones (packages/shared/matching.ts).
+  // Opcionales: si no se llenan, ese criterio simplemente no puntúa.
+  minExperienceYears Float?
+  minEducationLevel  String? // mismos valores que CandidateApplication.educationLevel
+  salaryMin          Float?
+  salaryMax          Float?
+  requiredExcelLevel String? // Básico | Intermedio | Avanzado
 
   benefits    String[] @default([]) // Medicina prepagada, Fondo de empleados, Plan de formación, etc.
 

@@ -19,6 +19,18 @@ export async function listApplicationsForVacancy(vacancyId: string): Promise<Can
   });
 }
 
+export async function countApplicationsByVacancy(): Promise<Record<string, number>> {
+  const rows = await prisma.candidateApplication.groupBy({
+    by: ["vacancyId"],
+    _count: { _all: true },
+  });
+  const counts: Record<string, number> = {};
+  for (const row of rows) {
+    if (row.vacancyId) counts[row.vacancyId] = row._count._all;
+  }
+  return counts;
+}
+
 export async function createApplication(data: {
   vacancyId?: string;
   fullName: string;

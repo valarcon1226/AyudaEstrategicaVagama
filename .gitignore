@@ -21,3 +21,6 @@ Thumbs.db
 
 # Exports crudos de Stitch (solo referencia local, no forman parte del producto)
 _stitch_raw/
+
+.vercel
+.env*
