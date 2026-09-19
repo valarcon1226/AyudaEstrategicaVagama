@@ -15,6 +15,7 @@ export type PublicVacancy = {
   id: string;
   title: string;
   sector: string;
+  positionLevel: string | null;
   city: string;
   modality: string;
   salaryRange: string | null;
@@ -37,6 +38,7 @@ export function toPublicVacancy(v: Vacancy): PublicVacancy {
     id: v.id,
     title: v.title,
     sector: v.sector,
+    positionLevel: v.positionLevel,
     city: v.city,
     modality: v.modality,
     salaryRange: vis.salaryRange === false ? null : v.salaryRange,

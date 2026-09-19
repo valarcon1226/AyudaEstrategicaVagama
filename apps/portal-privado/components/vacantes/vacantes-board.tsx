@@ -219,13 +219,26 @@ export function VacantesBoard({
                   <input name="clientCompany" className="w-full h-10 px-3 rounded-lg bg-surface-container-low text-on-surface font-body-md focus:outline-none" placeholder="Nombre real del cliente" />
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
                 <div>
                   <label className="block font-label-md text-label-md text-on-surface mb-1">Sector</label>
                   <select name="sector" required className="w-full h-10 px-3 rounded-lg bg-surface-container-low text-on-surface font-body-md focus:outline-none">
                     {SECTORS.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-label-md text-label-md text-on-surface mb-1">Nivel del cargo</label>
+                  <select name="positionLevel" className="w-full h-10 px-3 rounded-lg bg-surface-container-low text-on-surface font-body-md focus:outline-none">
+                    <option value="">Sin definir</option>
+                    <option>Operativo</option>
+                    <option>Administrativo</option>
+                    <option>Profesional</option>
+                    <option>Coordinación</option>
+                    <option>Gerencia</option>
+                    <option>Dirección</option>
+                    <option>Ejecutivo</option>
                   </select>
                 </div>
                 <div>

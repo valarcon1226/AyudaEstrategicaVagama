@@ -26,6 +26,7 @@ export async function createVacancyAction(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const clientCompany = String(formData.get("clientCompany") ?? "").trim() || "Cliente confidencial";
   const sector = String(formData.get("sector") ?? "").trim();
+  const positionLevel = String(formData.get("positionLevel") ?? "").trim() || undefined;
   const city = String(formData.get("location") ?? "").trim();
   const modality = String(formData.get("modality") ?? "Presencial");
   const salaryRange = String(formData.get("salaryRange") ?? "").trim() || "No especificado";
@@ -45,6 +46,7 @@ export async function createVacancyAction(formData: FormData) {
     title,
     clientCompany,
     sector,
+    positionLevel,
     city,
     modality,
     salaryRange,

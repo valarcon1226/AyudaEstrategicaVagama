@@ -5,13 +5,33 @@ import type { PublicVacancy } from "@shared/vacancy-types";
 import { SECTORS } from "@shared/site-content";
 import { applyToVacancyAction, type ApplyState } from "./actions";
 
+const POSITION_LEVELS = ["Operativo", "Administrativo", "Profesional", "Coordinación", "Gerencia", "Dirección", "Ejecutivo"];
+
 export function JobBoard({ vacancies }: { vacancies: PublicVacancy[] }) {
   const [sectorFilter, setSectorFilter] = useState<string>("Todas");
+  const [cityFilter, setCityFilter] = useState<string>("Todas");
+  const [levelFilter, setLevelFilter] = useState<string>("Todos");
   const [applyTo, setApplyTo] = useState<PublicVacancy | null>(null);
 
+  const cities = useMemo(
+    () => Array.from(new Set(vacancies.map((v) => v.city))).sort(),
+    [vacancies]
+  );
+  const levels = useMemo(
+    () =>
+      POSITION_LEVELS.filter((l) => vacancies.some((v) => v.positionLevel === l)),
+    [vacancies]
+  );
+
   const filtered = useMemo(
-    () => vacancies.filter((v) => sectorFilter === "Todas" || v.sector === sectorFilter),
-    [vacancies, sectorFilter]
+    () =>
+      vacancies.filter((v) => {
+        if (sectorFilter !== "Todas" && v.sector !== sectorFilter) return false;
+        if (cityFilter !== "Todas" && v.city !== cityFilter) return false;
+        if (levelFilter !== "Todos" && v.positionLevel !== levelFilter) return false;
+        return true;
+      }),
+    [vacancies, sectorFilter, cityFilter, levelFilter]
   );
 
   return (
@@ -24,28 +44,67 @@ export function JobBoard({ vacancies }: { vacancies: PublicVacancy[] }) {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 overflow-x-auto p-1 bg-surface-container-low rounded-xl mx-auto">
-        {["Todas", ...SECTORS].map((s) => (
-          <button
-            key={s}
-            onClick={() => setSectorFilter(s)}
-            className={
-              sectorFilter === s
-                ? "px-3.5 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm whitespace-nowrap"
-                : "px-3.5 py-1.5 rounded-lg text-secondary hover:text-on-surface font-label-md text-label-md transition-colors whitespace-nowrap"
-            }
-          >
-            {s}
-          </button>
-        ))}
+      <div className="flex flex-col gap-space-sm items-center">
+        <div className="flex items-center gap-2 overflow-x-auto p-1 bg-surface-container-low rounded-xl mx-auto">
+          {["Todas", ...SECTORS].map((s) => (
+            <button
+              key={s}
+              onClick={() => setSectorFilter(s)}
+              className={
+                sectorFilter === s
+                  ? "px-3.5 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm whitespace-nowrap"
+                  : "px-3.5 py-1.5 rounded-lg text-secondary hover:text-on-surface font-label-md text-label-md transition-colors whitespace-nowrap"
+              }
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-space-sm">
+          <div className="relative">
+            <select
+              value={cityFilter}
+              onChange={(e) => setCityFilter(e.target.value)}
+              className="h-10 pl-9 pr-8 rounded-lg bg-surface-container-lowest text-on-surface text-body-sm shadow-sm focus:outline-none appearance-none cursor-pointer"
+            >
+              <option value="Todas">Todas las ciudades</option>
+              {cities.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+            <span className="material-symbols-outlined absolute left-2.5 top-2.5 text-secondary text-[18px] pointer-events-none">location_on</span>
+            <span className="material-symbols-outlined absolute right-2 top-2.5 text-secondary text-[18px] pointer-events-none">expand_more</span>
+          </div>
+          <div className="relative">
+            <select
+              value={levelFilter}
+              onChange={(e) => setLevelFilter(e.target.value)}
+              className="h-10 pl-9 pr-8 rounded-lg bg-surface-container-lowest text-on-surface text-body-sm shadow-sm focus:outline-none appearance-none cursor-pointer"
+            >
+              <option value="Todos">Todos los niveles</option>
+              {levels.map((l) => (
+                <option key={l} value={l}>{l}</option>
+              ))}
+            </select>
+            <span className="material-symbols-outlined absolute left-2.5 top-2.5 text-secondary text-[18px] pointer-events-none">work_outline</span>
+            <span className="material-symbols-outlined absolute right-2 top-2.5 text-secondary text-[18px] pointer-events-none">expand_more</span>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
         {filtered.map((v) => (
           <div key={v.id} className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col gap-space-sm">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-semibold self-start">
-              {v.sector}
-            </span>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-semibold">
+                {v.sector}
+              </span>
+              {v.positionLevel && (
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+                  {v.positionLevel}
+                </span>
+              )}
+            </div>
             <h3 className="font-headline-lg text-headline-sm text-on-surface font-bold">{v.title}</h3>
             <p className="font-label-md text-label-md text-secondary flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px]">location_on</span> {v.city} ·{" "}

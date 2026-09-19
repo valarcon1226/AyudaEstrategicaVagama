@@ -36,6 +36,7 @@ export async function createVacancy(data: {
   title: string;
   clientCompany: string;
   sector: string;
+  positionLevel?: string;
   city: string;
   modality: string;
   salaryRange: string;
@@ -56,6 +57,7 @@ export async function createVacancy(data: {
       title: data.title,
       clientCompany: data.clientCompany,
       sector: data.sector,
+      positionLevel: data.positionLevel,
       city: data.city,
       modality: data.modality,
       salaryRange: data.salaryRange,

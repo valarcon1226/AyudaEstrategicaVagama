@@ -37,6 +37,8 @@ model Vacancy {
   modality    String // Presencial | Remoto | Híbrido
   clientCompany String
   sector      String
+  // Operativo | Administrativo | Profesional | Coordinación | Gerencia | Dirección | Ejecutivo
+  positionLevel String?
   salaryRange String?
   contractTypes String[] @default([]) // Indefinido, Fijo, Prestación de servicios
 
