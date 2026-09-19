@@ -1,0 +1,8 @@
+{
+  "name": "ayuda-estrategica",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

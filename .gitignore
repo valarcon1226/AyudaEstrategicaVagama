@@ -1,0 +1,23 @@
+# Dependencias
+node_modules/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Datos locales de desarrollo (JSON) — se reemplazan por la base de datos real.
+# Contienen hashes de contraseñas de usuarios de prueba, no deben subirse.
+data/
+
+# Variables de entorno / secretos
+.env
+.env*.local
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Exports crudos de Stitch (solo referencia local, no forman parte del producto)
+_stitch_raw/

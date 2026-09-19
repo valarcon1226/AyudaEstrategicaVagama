@@ -1,0 +1,155 @@
+// Esquema real para Supabase (Postgres). Reemplaza el almacén temporal en
+// /data (JSON). Campos tomados de: respuestas del brief, portafolio de
+// servicios, y informacion adicional/preguntas.xlsx (formularios reales de
+// candidatos, empresas y vacantes).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PARTNER
+}
+
+model PortalUser {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(PARTNER)
+  // Módulos del portal que puede ver este partner (ignorado si role = ADMIN).
+  permissions  String[] @default([])
+  createdAt    DateTime @default(now())
+
+  @@map("portal_users")
+}
+
+model Vacancy {
+  id          String   @id @default(cuid())
+  title       String
+  city        String
+  modality    String // Presencial | Remoto | Híbrido
+  clientCompany String
+  sector      String
+  salaryRange String?
+  contractTypes String[] @default([]) // Indefinido, Fijo, Prestación de servicios
+
+  mission     String? // Misión del cargo
+
+  // Requisitos / perfil
+  requiredStudies String?
+  minExperience   String?
+  competencies    String?
+  excelLevel      String?
+  wordLevel       String?
+  englishLevel    String?
+  otherLanguage   String?
+
+  benefits    String[] @default([]) // Medicina prepagada, Fondo de empleados, Plan de formación, etc.
+
+  applicationDeadline DateTime?
+
+  // Hasta 3 preguntas de filtro específicas de esta vacante, mostradas al candidato al aplicar.
+  customQuestions String[] @default([])
+
+  status      String   @default("abierta") // abierta | en_proceso | cerrada
+
+  // Qué tan visible es cada campo en la Bolsa de Empleos pública — el partner
+  // decide caso por caso (ej. {"salaryRange": false, "clientCompany": false}).
+  // Clave = nombre del campo tal como está arriba; ausente = visible por defecto.
+  visibleFields Json @default("{}")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applications CandidateApplication[]
+
+  @@map("vacancies")
+}
+
+model CompanyLead {
+  id                  String   @id @default(cuid())
+
+  // Datos de contacto
+  contactName         String
+  contactRole         String?
+  companyName         String
+  corporateEmail      String
+  phone               String
+
+  // Información de la necesidad
+  serviceInterest     String? // Headhunting | Evaluación de talento | Assessment | Consultoría RH | Capacitación | Otro
+  vacanciesCount      Int?
+  hiringLocation      String?
+  positionLevel       String? // Operativo | Administrativo | Profesional | Coordinación | Gerencia | Dirección | Ejecutivo
+  estimatedStartDate  String?
+
+  // Detalles de la solicitud
+  needDescription     String?
+  offeredSalary       String?
+  additionalBenefits  String?
+  workSchedule        String?
+  vacancyLocation     String?
+
+  // Agenda
+  preferredContactTime String? // Mañana | Tarde | Cualquier horario
+
+  dataConsent         Boolean  @default(false)
+
+  status              String   @default("nuevo") // nuevo | contactado | calificado
+  createdAt           DateTime @default(now())
+
+  @@map("leads_empresas")
+}
+
+model CandidateApplication {
+  id             String   @id @default(cuid())
+  vacancyId      String?
+  vacancy        Vacancy? @relation(fields: [vacancyId], references: [id])
+
+  fullName       String
+  residenceCity  String?
+  phone          String
+  email          String
+  age            Int?
+  nationality    String?
+  linkedin       String?
+
+  educationLevel String? // Bachiller | Técnico | Tecnólogo | Profesional | Especialización | Maestría
+  degreeObtained String?
+
+  totalExperienceYears  Float?
+  currentOrLastPosition String?
+  sectorExperience      String?
+  peopleLed             String?
+  lastThreeEmployers    String? // mínimo dos empleos, texto libre
+
+  salaryExpectation Float?
+  salaryNegotiable  Boolean?
+
+  currentlyEmployed       Boolean?
+  noticePeriod            String?
+  travelAvailability      String?
+  relocationAvailability  String?
+  preferredModality       String? // Presencial | Híbrida | Remota
+
+  excelLevel     String? // Básico | Intermedio | Avanzado
+  specificTools  String?
+  languages      String?
+
+  cvUrl          String?
+
+  // Respuestas a las preguntas de filtro específicas de la vacante (Vacancy.customQuestions).
+  customAnswers  Json?
+
+  status         String   @default("nueva") // nueva | en_revision | descartada | en_proceso
+  createdAt      DateTime @default(now())
+
+  @@map("postulaciones")
+}

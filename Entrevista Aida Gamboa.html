@@ -1,0 +1,435 @@
+<title>Entrevista Aida Gamboa</title>
+<style>
+  :root{
+    --bg:#f7f8fc; --surface:#ffffff; --surface-alt:#eef1fa; --border:#dde2ef;
+    --ink:#0f1a2e; --ink-soft:#4b5567; --muted:#7a8299;
+    --accent:#2554eb; --accent-deep:#113a91; --accent-soft:#e7edff;
+    --good:#0f9d67; --good-soft:#e3f9ef; --warn:#b8790a; --warn-soft:#fbf1de; --bad:#c23a3a;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b1220; --surface:#121a2c; --surface-alt:#17233a; --border:#26314f;
+      --ink:#eef2ff; --ink-soft:#b7c0da; --muted:#8996b8;
+      --accent:#7c9dff; --accent-deep:#c0d1ff; --accent-soft:#1b2a4d;
+      --good:#3ddba0; --good-soft:#123529; --warn:#e0ab48; --warn-soft:#3a2c12; --bad:#e0685f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b1220; --surface:#121a2c; --surface-alt:#17233a; --border:#26314f;
+    --ink:#eef2ff; --ink-soft:#b7c0da; --muted:#8996b8;
+    --accent:#7c9dff; --accent-deep:#c0d1ff; --accent-soft:#1b2a4d;
+    --good:#3ddba0; --good-soft:#123529; --warn:#e0ab48; --warn-soft:#3a2c12; --bad:#e0685f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif; padding-inline:16px;}
+  h1,h2,h3{font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif; text-wrap:balance; letter-spacing:-0.01em; color:var(--ink);}
+  p{line-height:1.6; color:var(--ink-soft); max-width:70ch;}
+  .wrap{max-width:860px; margin:0 auto; padding-block:28px 90px;}
+
+  .banner{background:linear-gradient(155deg,var(--accent-deep),var(--accent)); border-radius:20px; padding:30px clamp(20px,4vw,40px); color:#f2f5ff; margin-bottom:18px;}
+  .banner .eyebrow{text-transform:uppercase; font-size:12px; letter-spacing:.12em; font-weight:700; color:#cdd9ff; margin:0 0 8px;}
+  .banner h1{font-size:clamp(24px,3.6vw,32px); margin:0 0 8px; color:#fff;}
+  .banner p{color:#dbe3ff; max-width:64ch; margin:0;}
+
+  .meta{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px clamp(16px,3vw,24px); margin-bottom:18px;}
+  @media (max-width:560px){ .meta{grid-template-columns:1fr;} }
+  .meta label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:4px;}
+  .meta input, .meta select{width:100%; font-family:inherit; font-size:14px; background:var(--surface-alt); border:1px solid var(--border); border-radius:8px; padding:8px 10px; color:var(--ink);}
+
+  .progress-bar{position:sticky; top:env(safe-area-inset-top,0px); z-index:5; display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:8px 8px 8px 18px; margin:0 0 22px; box-shadow:0 6px 18px rgba(15,26,46,.08);}
+  .progress-bar span{font-size:12.5px; color:var(--muted); font-weight:600; white-space:nowrap;}
+  .progress-track{flex:1; height:6px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .progress-fill{height:100%; background:var(--good); width:0%; transition:width .3s ease;}
+
+  .star{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; background:var(--surface-alt); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:16px; font-size:12.5px;}
+  @media (max-width:560px){ .star{grid-template-columns:repeat(2,1fr);} }
+  .star b{color:var(--accent-deep); display:block; font-family:'Plus Jakarta Sans';}
+
+  .qgroup{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px clamp(16px,3vw,26px); margin-bottom:18px;}
+  .qgroup > h2{font-size:19px; margin:0 0 2px;}
+  .qgroup .sub{font-size:13px; color:var(--muted); margin:0 0 16px;}
+
+  .qa-item{padding:14px 0; border-top:1px solid var(--border);}
+  .qa-item:first-of-type{border-top:none;}
+  .qa-item p.q{margin:0 0 10px; font-size:14.5px; color:var(--ink); font-weight:600; max-width:none;}
+
+  .scale{display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;}
+  .scale label{position:relative;}
+  .scale input{position:absolute; opacity:0; inset:0; cursor:pointer;}
+  .scale span{display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:10px; border:1px solid var(--border); background:var(--surface-alt); font-weight:700; font-size:13.5px; color:var(--ink-soft); font-family:'Plus Jakarta Sans';}
+  .scale input:checked + span{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .scale input:focus-visible + span{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .qa-item textarea{width:100%; min-height:44px; resize:vertical; font-family:inherit; font-size:14px; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--ink);}
+  .qa-item textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .qa-item .comment-label{font-size:12px; color:var(--muted); font-weight:600; display:block; margin-bottom:6px;}
+
+  .flags{background:var(--warn-soft); border:1px solid var(--warn); border-radius:14px; padding:16px 20px; margin-bottom:18px;}
+  .flags h3{font-size:15px; margin:0 0 8px; color:var(--warn);}
+  .flags ul{margin:6px 0 0; padding-left:18px; font-size:13.5px; color:var(--ink-soft);}
+  .flags li{margin-bottom:4px;}
+
+  .summary{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px clamp(16px,3vw,26px); margin-bottom:18px;}
+  .summary h2{font-size:19px; margin:0 0 14px;}
+  .sum-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px;}
+  @media (max-width:640px){ .sum-grid{grid-template-columns:repeat(2,1fr);} }
+  .sum-tile{background:var(--surface-alt); border:1px solid var(--border); border-radius:12px; padding:12px 14px;}
+  .sum-tile .n{font-family:'Plus Jakarta Sans'; font-size:22px; font-weight:700; color:var(--accent-deep); font-variant-numeric:tabular-nums;}
+  .sum-tile .l{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:2px;}
+
+  .rec{margin-bottom:14px;}
+  .rec label{display:block; font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:6px;}
+  .rec select{width:100%; font-family:inherit; font-size:14.5px; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--ink);}
+  .rec textarea{width:100%; min-height:60px; margin-top:10px; resize:vertical; font-family:inherit; font-size:14px; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--ink);}
+
+  .actions{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn{font-family:'Plus Jakarta Sans'; font-weight:700; font-size:13.5px; border-radius:10px; padding:11px 18px; border:1px solid var(--border); background:var(--surface-alt); color:var(--ink); cursor:pointer;}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn:active{transform:translateY(1px);}
+  #copy-status{font-size:12.5px; color:var(--good); font-weight:600; align-self:center; min-height:1em;}
+
+  footer{color:var(--muted); font-size:13px; text-align:center; margin-top:32px;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="wrap">
+  <div class="banner">
+    <p class="eyebrow">Proceso de selección · Ayuda Estratégica</p>
+    <h1>Entrevista — Gerente General (Transporte)</h1>
+    <p>Completa la puntuación mientras avanza la entrevista. Tus respuestas se guardan automáticamente en este navegador. Al terminar, usa "Copiar resumen" o "Descargar resultados" para enviárselos a quien coordinó el proceso.</p>
+  </div>
+
+  <div class="meta">
+    <div><label for="m-candidato">Candidato</label><input id="m-candidato" type="text" placeholder="Nombre completo" value="Aida Gamboa"></div>
+    <div><label for="m-entrevistador">Entrevistador</label><input id="m-entrevistador" type="text" placeholder="Tu nombre"></div>
+    <div><label for="m-fecha">Fecha</label><input id="m-fecha" type="date"></div>
+  </div>
+
+  <div class="progress-bar" id="progress">
+    <span id="progress-label">0 / 19 puntuadas</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <h2>1. Preguntas conductuales (método STAR)</h2>
+    <p class="sub">Evalúan comportamientos pasados como predictor del desempeño futuro. Escala: 1 = Muy deficiente · 2 = Deficiente · 3 = Aceptable · 4 = Bueno · 5 = Excelente.</p>
+    <div class="star">
+      <div><b>S — Situación</b>Contexto del caso o desafío.</div>
+      <div><b>T — Tarea</b>Qué se esperaba de la persona.</div>
+      <div><b>A — Acción</b>Qué hizo concretamente.</div>
+      <div><b>R — Resultado</b>Qué consecuencia o aprendizaje tuvo.</div>
+    </div>
+    <div class="qa-item" data-cat="conductual" data-n="1">
+      <p class="q">1. Cuéntame sobre una situación en la que tuviste que tomar una decisión difícil bajo presión de tiempo, por ejemplo ante una falla operativa o un accidente. ¿Qué hiciste y cuál fue el resultado?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c1"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conductual" data-n="2">
+      <p class="q">2. Describe una ocasión en la que tuviste que liderar un equipo durante un período de crisis (huelga, escasez de personal, alza de combustibles, etc.). ¿Cómo gestionaste al equipo y qué resultado obtuviste?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c2"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conductual" data-n="3">
+      <p class="q">3. Cuéntame de un momento en que tuviste que negociar con un cliente grande o un proveedor clave en condiciones desfavorables. ¿Cuál fue tu estrategia y el desenlace?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c3"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conductual" data-n="4">
+      <p class="q">4. Relátame una situación en la que implementaste un cambio importante (nueva tecnología, reestructuración, nuevo proceso) y encontraste resistencia por parte del equipo. ¿Cómo la manejaste?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c4"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conductual" data-n="5">
+      <p class="q">5. Describe una decisión que tomaste que, en retrospectiva, no fue la correcta. ¿Qué aprendiste y cómo ajustaste tu forma de liderar después?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c5"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conductual" data-n="6">
+      <p class="q">6. Cuéntame sobre un conflicto entre áreas (por ejemplo, operaciones vs. mantenimiento, o ventas vs. logística) que tuviste que resolver como líder.</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c6"></textarea>
+    </div>
+  </div>
+
+  <div class="qgroup">
+    <h2>2. Preguntas específicas del rol</h2>
+    <p class="sub">Enfocadas en las responsabilidades concretas del puesto.</p>
+    <div class="qa-item" data-cat="rol" data-n="7">
+      <p class="q">7. ¿Cómo estructurarías los KPIs clave para medir la eficiencia operativa de una flota de transporte (puntualidad, costo por kilómetro, tiempo de inactividad, etc.)?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c7"></textarea>
+    </div>
+    <div class="qa-item" data-cat="rol" data-n="8">
+      <p class="q">8. ¿Qué experiencia tienes gestionando el cumplimiento normativo y regulatorio del sector transporte (permisos, seguridad vial, normativa ambiental, laboral)?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c8"></textarea>
+    </div>
+    <div class="qa-item" data-cat="rol" data-n="9">
+      <p class="q">9. ¿Cómo abordarías la optimización de rutas y reducción de costos de combustible sin afectar los niveles de servicio?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c9"></textarea>
+    </div>
+    <div class="qa-item" data-cat="rol" data-n="10">
+      <p class="q">10. Describe tu experiencia gestionando relaciones con sindicatos, conductores u operadores, si aplica.</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c10"></textarea>
+    </div>
+    <div class="qa-item" data-cat="rol" data-n="11">
+      <p class="q">11. ¿Cómo manejarías una situación de sobrecostos importantes en mantenimiento de flota? ¿Qué acciones tomarías primero?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c11"></textarea>
+    </div>
+    <div class="qa-item" data-cat="rol" data-n="12">
+      <p class="q">12. ¿Qué experiencia tienes con la gestión de contratos con clientes corporativos o entidades gubernamentales?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c12"></textarea>
+    </div>
+    <div class="qa-item" data-cat="rol" data-n="13">
+      <p class="q">13. ¿Cómo defines y supervisas la estrategia comercial y de crecimiento de la empresa a mediano/largo plazo?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c13"></textarea>
+    </div>
+  </div>
+
+  <div class="qgroup">
+    <h2>3. Preguntas de conocimiento</h2>
+    <p class="sub">Evalúan dominio técnico, financiero y normativo del sector.</p>
+    <div class="qa-item" data-cat="conocimiento" data-n="14">
+      <p class="q">14. ¿Qué indicadores financieros consideras más críticos para evaluar la salud de una empresa de transporte (margen operativo, EBITDA, costo por kilómetro recorrido, etc.)?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c14"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conocimiento" data-n="15">
+      <p class="q">15. ¿Qué normativas de seguridad vial y transporte de carga/pasajeros conoces y consideras esenciales en este país/región?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c15"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conocimiento" data-n="16">
+      <p class="q">16. ¿Qué sistemas o herramientas de gestión de flotas (GPS, telemetría, software TMS) has utilizado y cómo los aprovechas para la toma de decisiones?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c16"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conocimiento" data-n="17">
+      <p class="q">17. ¿Cómo calculas y controlas el costo operativo por vehículo o por ruta?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c17"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conocimiento" data-n="18">
+      <p class="q">18. ¿Qué sabes sobre gestión de riesgos en el sector (siniestralidad, seguros, responsabilidad civil)?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c18"></textarea>
+    </div>
+    <div class="qa-item" data-cat="conocimiento" data-n="19">
+      <p class="q">19. ¿Cómo evalúas la viabilidad de renovar o ampliar una flota (compra vs. leasing, vida útil de vehículos)?</p>
+      <div class="scale"></div>
+      <span class="comment-label">Comentarios</span><textarea id="c19"></textarea>
+    </div>
+  </div>
+
+  <div class="flags">
+    <h3>Follow-up sugerido y señales de alerta</h3>
+    <p style="margin:0 0 8px; color:var(--ink-soft); font-size:13.5px;"><strong>Follow-up:</strong> "¿Qué harías diferente si te enfrentaras a esa misma situación hoy?"</p>
+    <ul>
+      <li>Respuestas vagas sin datos concretos (sin cifras, sin resultados medibles) al hablar de logros pasados.</li>
+      <li>Atribuir todos los éxitos a sí mismo sin mencionar al equipo, o culpar sistemáticamente a otros por los fracasos.</li>
+    </ul>
+  </div>
+
+  <div class="summary">
+    <h2>Resumen</h2>
+    <div class="sum-grid">
+      <div class="sum-tile"><div class="n" id="avg-conductual">–</div><div class="l">Promedio conductual</div></div>
+      <div class="sum-tile"><div class="n" id="avg-rol">–</div><div class="l">Promedio rol</div></div>
+      <div class="sum-tile"><div class="n" id="avg-conocimiento">–</div><div class="l">Promedio conocimiento</div></div>
+      <div class="sum-tile"><div class="n" id="avg-total">–</div><div class="l">Promedio total</div></div>
+    </div>
+    <div class="rec">
+      <label for="m-recomendacion">Recomendación final</label>
+      <select id="m-recomendacion">
+        <option value="">Selecciona…</option>
+        <option value="Contratar">Contratar</option>
+        <option value="Segunda entrevista">Segunda entrevista</option>
+        <option value="No contratar">No contratar</option>
+      </select>
+      <textarea id="m-notas" placeholder="Notas generales adicionales (opcional)"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="btn-copy" type="button">Copiar resumen</button>
+      <button class="btn" id="btn-download" type="button">Descargar resultados (.txt)</button>
+      <span id="copy-status"></span>
+    </div>
+  </div>
+
+  <footer>Ayuda Estratégica · Hoja de puntuación interactiva — los resultados se guardan solo en este navegador hasta que los copies o descargues.</footer>
+</div>
+
+<script>
+(function(){
+  try{
+    var TOTAL_Q = 19;
+    var qaItems = Array.prototype.slice.call(document.querySelectorAll('.qa-item'));
+    var fill = document.getElementById('progress-fill');
+    var label = document.getElementById('progress-label');
+    var metaIds = ['m-candidato','m-entrevistador','m-fecha','m-recomendacion','m-notas'];
+
+    // build the 1-5 scale controls for each question
+    qaItems.forEach(function(item){
+      var n = item.getAttribute('data-n');
+      var scale = item.querySelector('.scale');
+      for(var v=1; v<=5; v++){
+        var lbl = document.createElement('label');
+        var input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'score' + n;
+        input.value = String(v);
+        input.id = 'score' + n + '-' + v;
+        var span = document.createElement('span');
+        span.textContent = v;
+        lbl.appendChild(input);
+        lbl.appendChild(span);
+        scale.appendChild(lbl);
+      }
+    });
+
+    function catAvg(cat){
+      var items = qaItems.filter(function(it){ return it.getAttribute('data-cat') === cat; });
+      var sum = 0, count = 0;
+      items.forEach(function(it){
+        var n = it.getAttribute('data-n');
+        var checked = document.querySelector('input[name="score'+n+'"]:checked');
+        if(checked){ sum += Number(checked.value); count++; }
+      });
+      return count ? (sum/count) : null;
+    }
+
+    function updateSummary(){
+      var answered = 0;
+      qaItems.forEach(function(it){
+        var n = it.getAttribute('data-n');
+        if(document.querySelector('input[name="score'+n+'"]:checked')) answered++;
+      });
+      if(fill) fill.style.width = (answered/TOTAL_Q*100) + '%';
+      if(label) label.textContent = answered + ' / ' + TOTAL_Q + ' puntuadas';
+
+      var aC = catAvg('conductual'), aR = catAvg('rol'), aK = catAvg('conocimiento');
+      document.getElementById('avg-conductual').textContent = aC===null ? '–' : aC.toFixed(1);
+      document.getElementById('avg-rol').textContent = aR===null ? '–' : aR.toFixed(1);
+      document.getElementById('avg-conocimiento').textContent = aK===null ? '–' : aK.toFixed(1);
+
+      var allSum = 0, allCount = 0;
+      qaItems.forEach(function(it){
+        var n = it.getAttribute('data-n');
+        var checked = document.querySelector('input[name="score'+n+'"]:checked');
+        if(checked){ allSum += Number(checked.value); allCount++; }
+      });
+      document.getElementById('avg-total').textContent = allCount ? (allSum/allCount).toFixed(1) : '–';
+    }
+
+    function saveField(key, value){
+      try{ localStorage.setItem('entrevista_ggt_'+key, value); }catch(e){}
+    }
+    function loadField(key){
+      try{ return localStorage.getItem('entrevista_ggt_'+key); }catch(e){ return null; }
+    }
+
+    // restore + wire meta fields
+    metaIds.forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el) return;
+      var saved = loadField(id);
+      if(saved!==null) el.value = saved;
+      el.addEventListener('input', function(){ saveField(id, el.value); });
+      el.addEventListener('change', function(){ saveField(id, el.value); });
+    });
+
+    // restore + wire question comments and scores
+    qaItems.forEach(function(item){
+      var n = item.getAttribute('data-n');
+      var textarea = item.querySelector('textarea');
+      var savedComment = loadField('comment'+n);
+      if(savedComment) textarea.value = savedComment;
+      textarea.addEventListener('input', function(){ saveField('comment'+n, textarea.value); });
+
+      var savedScore = loadField('score'+n);
+      if(savedScore){
+        var radio = document.getElementById('score'+n+'-'+savedScore);
+        if(radio) radio.checked = true;
+      }
+      item.querySelectorAll('input[type=radio]').forEach(function(r){
+        r.addEventListener('change', function(){
+          saveField('score'+n, r.value);
+          updateSummary();
+        });
+      });
+    });
+
+    updateSummary();
+
+    function buildSummaryText(){
+      var cat = { conductual:'CONDUCTUAL', rol:'ESPECÍFICA DEL ROL', conocimiento:'CONOCIMIENTO' };
+      var lines = [];
+      lines.push('HOJA DE PUNTUACIÓN — ENTREVISTA GERENTE GENERAL (TRANSPORTE)');
+      lines.push('Candidato: ' + (document.getElementById('m-candidato').value || '(sin indicar)'));
+      lines.push('Entrevistador: ' + (document.getElementById('m-entrevistador').value || '(sin indicar)'));
+      lines.push('Fecha: ' + (document.getElementById('m-fecha').value || '(sin indicar)'));
+      lines.push('');
+      ['conductual','rol','conocimiento'].forEach(function(c){
+        lines.push(cat[c]);
+        qaItems.filter(function(it){ return it.getAttribute('data-cat')===c; }).forEach(function(it){
+          var n = it.getAttribute('data-n');
+          var q = it.querySelector('p.q').textContent.trim();
+          var checked = document.querySelector('input[name="score'+n+'"]:checked');
+          var score = checked ? checked.value : '(sin puntuar)';
+          var comment = it.querySelector('textarea').value.trim() || '(sin comentario)';
+          lines.push('- ' + q);
+          lines.push('  Puntuación: ' + score + ' | Comentario: ' + comment);
+        });
+        lines.push('');
+      });
+      lines.push('RESUMEN');
+      lines.push('Promedio conductual: ' + document.getElementById('avg-conductual').textContent);
+      lines.push('Promedio específica del rol: ' + document.getElementById('avg-rol').textContent);
+      lines.push('Promedio conocimiento: ' + document.getElementById('avg-conocimiento').textContent);
+      lines.push('Promedio total: ' + document.getElementById('avg-total').textContent);
+      lines.push('Preguntas respondidas: ' + label.textContent);
+      lines.push('');
+      lines.push('Recomendación final: ' + (document.getElementById('m-recomendacion').value || '(sin indicar)'));
+      lines.push('Notas: ' + (document.getElementById('m-notas').value.trim() || '(sin notas)'));
+      return lines.join('\n');
+    }
+
+    var copyStatus = document.getElementById('copy-status');
+    document.getElementById('btn-copy').addEventListener('click', function(){
+      var text = buildSummaryText();
+      function ok(){ copyStatus.textContent = 'Copiado ✓'; setTimeout(function(){ copyStatus.textContent=''; }, 2500); }
+      function fail(){ copyStatus.textContent = 'No se pudo copiar automáticamente — selecciona y copia manualmente.'; }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(ok, fail);
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta); ok();
+        }
+      }catch(e){ fail(); }
+    });
+
+    document.getElementById('btn-download').addEventListener('click', function(){
+      try{
+        var text = buildSummaryText();
+        var blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        var candidato = (document.getElementById('m-candidato').value || 'candidato').trim().replace(/[^a-z0-9]+/gi,'_');
+        a.href = url;
+        a.download = 'entrevista_' + candidato + '.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }catch(e){}
+    });
+  }catch(e){}
+})();
+</script>

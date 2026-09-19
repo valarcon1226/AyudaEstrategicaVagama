@@ -1,0 +1,360 @@
+<title>Plan Ayuda Estratégica</title>
+<style>
+  :root{
+    --bg:#f7f8fc; --surface:#ffffff; --surface-alt:#eef1fa; --border:#dde2ef;
+    --ink:#0f1a2e; --ink-soft:#4b5567; --muted:#7a8299;
+    --accent:#2554eb; --accent-deep:#113a91; --accent-soft:#e7edff;
+    --good:#0f9d67; --good-soft:#e3f9ef; --warn:#b8790a; --warn-soft:#fbf1de;
+    --code-bg:#eef1fa;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b1220; --surface:#121a2c; --surface-alt:#17233a; --border:#26314f;
+      --ink:#eef2ff; --ink-soft:#b7c0da; --muted:#8996b8;
+      --accent:#7c9dff; --accent-deep:#c0d1ff; --accent-soft:#1b2a4d;
+      --good:#3ddba0; --good-soft:#123529; --warn:#e0ab48; --warn-soft:#3a2c12;
+      --code-bg:#17233a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b1220; --surface:#121a2c; --surface-alt:#17233a; --border:#26314f;
+    --ink:#eef2ff; --ink-soft:#b7c0da; --muted:#8996b8;
+    --accent:#7c9dff; --accent-deep:#c0d1ff; --accent-soft:#1b2a4d;
+    --good:#3ddba0; --good-soft:#123529; --warn:#e0ab48; --warn-soft:#3a2c12;
+    --code-bg:#17233a;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    padding-inline:16px;
+  }
+  h1,h2,h3,.display{
+    font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;
+    text-wrap:balance; letter-spacing:-0.01em; color:var(--ink);
+  }
+  p{line-height:1.65; color:var(--ink-soft); max-width:70ch;}
+  a{color:var(--accent);}
+  .wrap{max-width:920px; margin:0 auto; padding-block:28px 80px;}
+
+  /* Top banner */
+  .banner{
+    background:linear-gradient(155deg,var(--accent-deep),var(--accent));
+    border-radius:20px; padding:36px clamp(20px,4vw,44px); color:#f2f5ff;
+    margin-bottom:20px;
+  }
+  .banner .eyebrow{
+    text-transform:uppercase; font-size:12px; letter-spacing:.12em; font-weight:700;
+    color:#cdd9ff; margin:0 0 10px;
+  }
+  .banner h1{font-size:clamp(28px,4vw,38px); margin:0 0 10px; color:#fff;}
+  .banner p{color:#dbe3ff; max-width:62ch; margin:0 0 20px;}
+  .banner-stats{display:flex; flex-wrap:wrap; gap:14px;}
+  .banner-stats div{
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22);
+    border-radius:12px; padding:10px 16px; min-width:130px;
+  }
+  .banner-stats .n{font-family:'Plus Jakarta Sans'; font-size:22px; font-weight:700; color:#fff; font-variant-numeric:tabular-nums;}
+  .banner-stats .l{font-size:12px; color:#c9d5ff;}
+
+  /* nav */
+  nav.toc{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:10;
+    display:flex; gap:6px; overflow-x:auto; padding:10px 0; margin-bottom:28px;
+    background:var(--bg); border-bottom:1px solid var(--border);
+  }
+  nav.toc a{
+    white-space:nowrap; font-size:13px; font-weight:600; color:var(--ink-soft);
+    text-decoration:none; padding:8px 14px; border-radius:999px; border:1px solid var(--border);
+    background:var(--surface);
+  }
+  nav.toc a:hover{color:var(--accent); border-color:var(--accent);}
+
+  section{margin-bottom:56px; scroll-margin-top:70px;}
+  .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:6px;}
+  .sec-num{font-family:'Plus Jakarta Sans'; font-weight:700; color:var(--accent); font-size:14px;}
+  section h2{font-size:26px; margin:0;}
+  section > .lede{margin-bottom:24px;}
+
+  .callout{
+    background:var(--warn-soft); border:1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+    border-radius:14px; padding:16px 20px; margin-bottom:24px;
+  }
+  .callout p{color:var(--ink); margin:0; max-width:none;}
+  .callout strong{color:var(--warn);}
+
+  /* screen inventory table */
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:14px;}
+  table{border-collapse:collapse; width:100%; min-width:640px; font-size:14px;}
+  th,td{text-align:left; padding:12px 16px; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--surface-alt); font-family:'Plus Jakarta Sans'; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);}
+  tr:last-child td{border-bottom:none;}
+  td{color:var(--ink-soft);}
+  td.name{color:var(--ink); font-weight:600;}
+  .tag{display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--accent-soft); color:var(--accent-deep); margin:2px 4px 0 0;}
+
+  /* roadmap */
+  .phase{
+    display:grid; grid-template-columns:44px 1fr; gap:16px; margin-bottom:4px; position:relative;
+  }
+  .phase .dot{
+    width:44px; height:44px; border-radius:50%; background:var(--surface); border:2px solid var(--accent);
+    display:flex; align-items:center; justify-content:center; font-family:'Plus Jakarta Sans'; font-weight:700; color:var(--accent);
+    flex-shrink:0; z-index:1;
+  }
+  .phase .line{
+    position:absolute; left:21px; top:44px; bottom:-4px; width:2px; background:var(--border);
+  }
+  .phase:last-child .line{display:none;}
+  .phase-body{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 20px; margin-bottom:28px;}
+  .phase-body h3{font-size:17px; margin:0 0 4px;}
+  .phase-body .meta{font-size:12px; color:var(--muted); margin-bottom:10px; font-weight:600; text-transform:uppercase; letter-spacing:.03em;}
+  .phase-body ul{margin:8px 0 0; padding-left:20px; color:var(--ink-soft); font-size:14px;}
+  .phase-body li{margin-bottom:4px;}
+
+  /* link-out cards */
+  .link-card{
+    display:flex; align-items:center; gap:16px; text-decoration:none;
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:18px 20px; transition:border-color .15s ease, transform .15s ease;
+  }
+  .link-card:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .link-card-icon{font-size:26px; flex-shrink:0;}
+  .link-card-title{font-family:'Plus Jakarta Sans'; font-weight:700; font-size:15.5px; color:var(--ink);}
+  .link-card-sub{font-size:13px; color:var(--muted); margin-top:2px;}
+  .link-card-arrow{margin-left:auto; color:var(--accent); font-size:18px; flex-shrink:0;}
+
+  footer{color:var(--muted); font-size:13px; text-align:center; margin-top:40px;}
+
+  @media (max-width:520px){
+    .banner{padding:24px 18px;}
+    th,td{padding:10px;}
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="wrap">
+
+  <div class="banner">
+    <p class="eyebrow">Ayuda Estratégica · Plataforma de headhunting</p>
+    <h1>De maqueta en Stitch a plataforma funcionando</h1>
+    <p>Revisión del diseño "Headhunting Webapp and ATS Portal", plan de desarrollo por fases, preguntas de arquitectura para decidir el stack, y el cuestionario para llenar la plataforma con información real del negocio.</p>
+    <div class="banner-stats">
+      <div><div class="n">9</div><div class="l">pantallas diseñadas</div></div>
+      <div><div class="n">8</div><div class="l">fases de desarrollo</div></div>
+      <div><div class="n">26</div><div class="l">decisiones de arquitectura</div></div>
+      <div><div class="n">54</div><div class="l">preguntas para la dueña</div></div>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Contenido">
+    <a href="#revision">1 · Revisión del diseño</a>
+    <a href="#plan">2 · Plan de desarrollo</a>
+    <a href="#arquitectura">3 · Preguntas de arquitectura</a>
+    <a href="#negocio">4 · Cuestionario para la dueña</a>
+  </nav>
+
+  <!-- 1. REVISIÓN -->
+  <section id="revision">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Revisión del diseño</h2></div>
+    <p class="lede">El proyecto de Stitch "Headhunting Webapp and ATS Portal" ya define una plataforma completa de dos caras: un sitio público (landing + bolsa de empleos + planes) y un portal privado para el equipo de reclutamiento (ATS + CRM + calendario + finanzas + analítica). Hoy en el repositorio local solo existe un prototipo mínimo (una landing en Django que envía un formulario a un backend en Flask) — el diseño va muy por delante del código.</p>
+
+    <div class="callout">
+      <p><strong>Ojo con la marca:</strong> todo el contenido generado por Stitch usa una marca ficticia ("Aída Gamboa" / "NexTalent") en vez de "Ayuda Estratégica" — nombre en el nav, footer y copyright. Esto hay que reemplazarlo en todas las pantallas antes de lanzar, junto con el resto de datos de ejemplo (cifras, testimonios, precios) listados abajo.</p>
+    </div>
+
+    <div class="callout">
+      <p><strong>El "logo" no es un logo real:</strong> la pieza que aparece como logo del proyecto en Stitch es una imagen de banco de imágenes (depositphotos) con marca de agua e iniciales "AG" — coincide con "Aída Gamboa", la marca ficticia, no con "Ayuda Estratégica". No se puede usar comercialmente (tiene copyright del banco de imágenes) y ni siquiera corresponde al nombre real. Hay que diseñar un logo propio o encargarlo — está en el cuestionario de marca.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pantalla</th><th>Qué muestra</th><th>Qué falta conectar</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">Landing ejecutiva</td>
+            <td>Hero, metodología en 4 etapas, métricas de resultados, testimonios, CTA de diagnóstico, login de reclutadores</td>
+            <td><span class="tag">marca real</span><span class="tag">métricas reales</span><span class="tag">testimonios reales</span><span class="tag">auth</span></td>
+          </tr>
+          <tr>
+            <td class="name">Portal privado · Vacantes y candidatos</td>
+            <td>Pipeline de vacantes, tarjetas de candidatos con % de match, modal de crear vacante, modal de agendar entrevista</td>
+            <td><span class="tag">modelo de datos ATS</span><span class="tag">motor de matching</span><span class="tag">integración video</span></td>
+          </tr>
+          <tr>
+            <td class="name">Portal privado · CRM y leads</td>
+            <td>Leads web pendientes de contactar, cuentas B2B activas, métricas de conversión, agenda diaria</td>
+            <td><span class="tag">CRM real</span><span class="tag">captura de leads del sitio</span><span class="tag">sync calendario</span></td>
+          </tr>
+          <tr>
+            <td class="name">Portal privado · Calendario</td>
+            <td>Agendamiento de entrevistas y reuniones B2B</td>
+            <td><span class="tag">integración Google/Outlook</span><span class="tag">videollamada</span></td>
+          </tr>
+          <tr>
+            <td class="name">Portal privado · Finanzas</td>
+            <td>Facturas, cuentas por cobrar, acuerdos diferidos, gastos, conciliación bancaria multi-moneda</td>
+            <td><span class="tag">facturación real</span><span class="tag">cuentas bancarias</span><span class="tag">pasarela de pago</span></td>
+          </tr>
+          <tr>
+            <td class="name">Portal privado · Analítica / BI</td>
+            <td>Facturación acumulada, embudo de selección C-Suite, benchmark salarial, scorecard por reclutador</td>
+            <td><span class="tag">pipeline de datos</span><span class="tag">definición de KPIs reales</span></td>
+          </tr>
+          <tr>
+            <td class="name">Planes B2B + agendar cita</td>
+            <td>3 planes de servicio (Contingencia, Retenida, Embedded) con tabla comparativa y flujo de reserva de cita</td>
+            <td><span class="tag">precios reales</span><span class="tag">disponibilidad real del equipo</span><span class="tag">pagos/contratos</span></td>
+          </tr>
+          <tr>
+            <td class="name">Bolsa de empleos (candidatos)</td>
+            <td>Buscador de vacantes con filtros, ficha de vacante, formulario de postulación con carga de CV</td>
+            <td><span class="tag">vacantes reales</span><span class="tag">almacenamiento de CVs</span><span class="tag">notificaciones</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2. PLAN -->
+  <section id="plan">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Plan de desarrollo</h2></div>
+    <p class="lede">Fases pensadas para poder mostrar avances tempranos (landing + captura de leads reales) mientras se construye el resto del ATS. El orden importa: cada fase depende de que la anterior tenga un modelo de datos y autenticación estables.</p>
+
+    <div class="phase">
+      <div class="dot">0</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Fundación</div>
+        <h3>Fase 0 — Stack, repo y diseño de datos</h3>
+        <ul>
+          <li>Decidir stack definitivo (ver sección de arquitectura) y descartar el prototipo Django/Flask actual o migrarlo.</li>
+          <li>Modelar entidades núcleo: Empresa, Contacto, Vacante, Candidato, Postulación, Entrevista, Usuario/Rol.</li>
+          <li>Configurar entorno, control de versiones (git), y ambientes (dev/staging/prod).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="dot">1</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Acceso</div>
+        <h3>Fase 1 — Autenticación y roles</h3>
+        <ul>
+          <li>Login de reclutadores (portal privado) con roles: Partner, Reclutador, Admin/Finanzas.</li>
+          <li>Sesión, recuperación de contraseña, y opción de 2FA (la maqueta la menciona explícitamente).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="dot">2</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Núcleo ATS</div>
+        <h3>Fase 2 — Vacantes y candidatos</h3>
+        <ul>
+          <li>CRUD de vacantes (crear, prioridad, estado: abierta / en terna / cerrada).</li>
+          <li>Pipeline de candidatos por vacante, carga de hoja de vida, notas y estado de background check.</li>
+          <li>Primera versión de "match %": puede empezar como score manual/reglas simples antes de invertir en IA.</li>
+          <li>Exportar terna a PDF y generar link compartible de solo lectura para el cliente.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="dot">3</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Ventas</div>
+        <h3>Fase 3 — CRM y bolsa de empleos pública</h3>
+        <ul>
+          <li>Landing pública + formulario de contacto que crea un lead en el CRM (conecta el prototipo actual con datos reales).</li>
+          <li>Vista de leads pendientes, cuentas activas, y estados del pipeline comercial.</li>
+          <li>Bolsa de empleos pública con filtros y postulación con carga de CV.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="dot">4</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Coordinación</div>
+        <h3>Fase 4 — Calendario y agendamiento</h3>
+        <ul>
+          <li>Agendar entrevistas y citas B2B con selección de horario disponible.</li>
+          <li>Integración con Google Calendar/Outlook y generación de enlaces de Meet/Teams.</li>
+          <li>Recordatorios y confirmaciones automáticas por email.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="dot">5</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Dinero</div>
+        <h3>Fase 5 — Facturación y finanzas</h3>
+        <ul>
+          <li>Generación de cuentas de cobro/facturas ligadas a mandatos, con hitos de pago (ej. 1/3-1/3-1/3 del plan Retenida).</li>
+          <li>Registro de gastos, estado de cartera (por cobrar / cobrado / vencido).</li>
+          <li>Definir si hay pasarela de pago en línea o solo facturación manual con seguimiento.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="dot">6</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Visibilidad</div>
+        <h3>Fase 6 — Analítica / BI</h3>
+        <ul>
+          <li>KPIs reales calculados desde los datos ya capturados (no placeholders): facturación, tiempo a terna, tasa de cierre, NPS.</li>
+          <li>Decidir si se construye un dashboard propio o se embebe Power BI / Looker Studio.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="dot">7</div><div class="line"></div>
+      <div class="phase-body">
+        <div class="meta">Lanzamiento</div>
+        <h3>Fase 7 — Planes B2B, contenido real y QA</h3>
+        <ul>
+          <li>Reemplazar toda la marca, textos, métricas y testimonios ficticios por los reales (cuestionario abajo).</li>
+          <li>Cargar precios reales de los planes y probar el flujo completo de reserva de cita.</li>
+          <li>Pruebas de extremo a extremo, revisión legal (términos, privacidad, NDA) y despliegue a producción.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ARQUITECTURA -->
+  <section id="arquitectura">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Preguntas de arquitectura</h2></div>
+    <p class="lede">26 decisiones técnicas — stack, datos, autenticación, matching, integraciones, seguridad y alcance — que definen cómo se construye la plataforma. Viven en un documento aparte, con espacio para escribir cada decisión (no solo marcar una casilla).</p>
+    <a class="link-card" href="https://claude.ai/artifact/MgFNGTEbnAn2x7Z4AtsFen" target="_blank" rel="noopener">
+      <div class="link-card-icon">🛠️</div>
+      <div>
+        <div class="link-card-title">Abrir: Arquitectura Ayuda Estratégica</div>
+        <div class="link-card-sub">Documento interno — 26 decisiones técnicas con campo de respuesta</div>
+      </div>
+      <div class="link-card-arrow">→</div>
+    </a>
+  </section>
+
+  <!-- 4. NEGOCIO -->
+  <section id="negocio">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Cuestionario para la dueña</h2></div>
+    <p class="lede">54 preguntas para reemplazar todo lo que hoy es contenido de ejemplo ("Aída Gamboa", cifras, testimonios y el logo de stock) por información real de Ayuda Estratégica. Vive en un documento aparte, pensado para enviárselo directamente a la dueña.</p>
+    <a class="link-card" href="https://claude.ai/artifact/SwyTtWQTeeW7ZPE8bJHtUk" target="_blank" rel="noopener">
+      <div class="link-card-icon">📝</div>
+      <div>
+        <div class="link-card-title">Abrir: Brief Ayuda Estratégica</div>
+        <div class="link-card-sub">Para compartir con la dueña — 54 preguntas de negocio con campo de respuesta</div>
+      </div>
+      <div class="link-card-arrow">→</div>
+    </a>
+  </section>
+
+  <footer>Documento vivo — vuelve a esta página a medida que avance el desarrollo.</footer>
+</div>

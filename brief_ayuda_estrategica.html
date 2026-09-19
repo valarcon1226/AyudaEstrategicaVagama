@@ -1,0 +1,267 @@
+<title>Brief Ayuda Estratégica</title>
+<style>
+  :root{
+    --bg:#f8f7fb; --surface:#ffffff; --surface-alt:#f2f0f9; --border:#e3dff0;
+    --ink:#201a33; --ink-soft:#544c6b; --muted:#8a8199;
+    --accent:#6d3fd6; --accent-deep:#4a2699; --accent-soft:#efe8fc;
+    --good:#0f9d67;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#100c1c; --surface:#1a1530; --surface-alt:#221b3c; --border:#332a54;
+      --ink:#f1eefc; --ink-soft:#c3bade; --muted:#948aad;
+      --accent:#a780ff; --accent-deep:#c9adff; --accent-soft:#251c42;
+      --good:#3ddba0;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#100c1c; --surface:#1a1530; --surface-alt:#221b3c; --border:#332a54;
+    --ink:#f1eefc; --ink-soft:#c3bade; --muted:#948aad;
+    --accent:#a780ff; --accent-deep:#c9adff; --accent-soft:#251c42;
+    --good:#3ddba0;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',system-ui,sans-serif; padding-inline:16px;}
+  h1,h2,h3{font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif; text-wrap:balance; letter-spacing:-0.01em; color:var(--ink);}
+  p{line-height:1.65; color:var(--ink-soft); max-width:68ch;}
+  .wrap{max-width:820px; margin:0 auto; padding-block:28px 70px;}
+
+  .banner{background:linear-gradient(155deg,var(--accent-deep),var(--accent)); border-radius:18px; padding:32px clamp(20px,4vw,40px); color:#fff; margin-bottom:24px;}
+  .banner .eyebrow{text-transform:uppercase; font-size:12px; letter-spacing:.12em; font-weight:700; color:#e5d9ff; margin:0 0 8px;}
+  .banner h1{font-size:clamp(26px,3.8vw,34px); margin:0 0 10px; color:#fff;}
+  .banner p{color:#eee6ff; max-width:62ch; margin:0;}
+
+  .progress-bar{position:sticky; top:env(safe-area-inset-top,0px); z-index:5; display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:8px 8px 8px 18px; margin:0 0 26px; box-shadow:0 6px 18px rgba(32,26,51,.1);}
+  .progress-bar span{font-size:12.5px; color:var(--muted); font-weight:600; white-space:nowrap;}
+  .progress-track{flex:1; height:6px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .progress-fill{height:100%; background:var(--good); width:0%; transition:width .3s ease;}
+
+  .qgroup{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px clamp(16px,3vw,26px); margin-bottom:18px;}
+  .qgroup h3{font-size:16px; margin:0 0 4px;}
+  .qgroup .sub{font-size:13px; color:var(--muted); margin:0 0 14px;}
+
+  .qa-item{padding:12px 0; border-top:1px solid var(--border);}
+  .qa-item:first-of-type{border-top:none;}
+  .qa-item p.q{margin:0 0 8px; font-size:14.5px; color:var(--ink); font-weight:600; max-width:none;}
+  .qa-item .q .hint{display:block; font-weight:400; font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .qa-item textarea{width:100%; min-height:44px; resize:vertical; font-family:inherit; font-size:14px; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--ink);}
+  .qa-item textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+  footer{color:var(--muted); font-size:13px; text-align:center; margin-top:32px;}
+
+  .actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px clamp(16px,3vw,24px); margin-top:8px;}
+  .actions p{margin:0 0 4px; font-size:13.5px; flex-basis:100%;}
+  .btn{font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:13.5px; border-radius:10px; padding:11px 18px; border:1px solid var(--border); background:var(--surface-alt); color:var(--ink); cursor:pointer;}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn:active{transform:translateY(1px);}
+  #copy-status{font-size:12.5px; color:var(--good); font-weight:600; align-self:center; min-height:1em;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="wrap">
+  <div class="banner">
+    <p class="eyebrow">Para completar · Ayuda Estratégica</p>
+    <h1>Cuéntanos sobre tu negocio</h1>
+    <p>Estamos construyendo tu plataforma de headhunting a partir de un diseño de referencia. Ese diseño trae textos, cifras y hasta un logo de ejemplo — necesitamos reemplazar todo eso por información real tuya. Responde lo que puedas ahora mismo; lo que no sepas o no apliques, déjalo en blanco o escribe "pendiente". Tus respuestas se guardan automáticamente en este navegador mientras escribes.</p>
+  </div>
+
+  <div class="progress-bar" id="progress">
+    <span id="progress-label">0 / 54 respondidas</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Identidad de marca</h3>
+    <div class="qa-item"><p class="q">Nombre comercial exacto y eslogan (si tiene uno)</p><textarea id="b1"></textarea></div>
+    <div class="qa-item"><p class="q">¿Ya existe un logo y colores de marca definidos? <span class="hint">Importante: el diseño de referencia trae un logo con las iniciales "AG" tomado de un banco de imágenes de stock (tiene marca de agua) — no es un logo real de la empresa y no se puede usar así. Si no hay uno propio, hay que diseñarlo.</span></p><textarea id="b2"></textarea></div>
+    <div class="qa-item"><p class="q">Descripción corta de la empresa para el pie de página y el "Acerca de" (2-3 frases)</p><textarea id="b3"></textarea></div>
+    <div class="qa-item"><p class="q">Dominio web deseado y correos de contacto oficiales</p><textarea id="b4"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Contacto y otros servicios</h3>
+    <p class="sub">Esto es lo que va en la sección de contacto del sitio y en el pie de página — sin esto no puedo poner nada sin inventarlo.</p>
+    <div class="qa-item"><p class="q">Teléfono y/o WhatsApp de contacto oficial (indica si hay uno distinto para clientes y otro para candidatos)</p><textarea id="b39"></textarea></div>
+    <div class="qa-item"><p class="q">Redes sociales oficiales (LinkedIn, Instagram, etc.) — enlace exacto de cada una</p><textarea id="b40"></textarea></div>
+    <div class="qa-item"><p class="q">¿Hay una dirección física de oficina que se deba mostrar, o la operación es 100% remota/virtual?</p><textarea id="b41"></textarea></div>
+    <div class="qa-item"><p class="q">Además de los 3 planes de headhunting (Contingencia, Retenida, Embedded/RPO): ¿venden algo más? Por ejemplo consultoría de RH, evaluación de talento, assessment, capacitación, employer branding, outplacement, etc. Descríbelo y cómo se cobra cada uno</p><textarea id="b42"></textarea></div>
+    <div class="qa-item"><p class="q">Horario general de atención al público (días y horas, zona horaria) — puede ser distinto de la disponibilidad de agenda para citas</p><textarea id="b43"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Posicionamiento y servicios</h3>
+    <div class="qa-item"><p class="q">¿El foco es 100% ejecutivo/C-Suite, o también se colocan otros niveles de cargo?</p><textarea id="b5"></textarea></div>
+    <div class="qa-item"><p class="q">Sectores/industrias en los que se especializa la empresa hoy</p><textarea id="b6"></textarea></div>
+    <div class="qa-item"><p class="q">Países donde opera actualmente y países donde le gustaría operar</p><textarea id="b7"></textarea></div>
+    <div class="qa-item"><p class="q">¿Cuál es el proceso real de trabajo, paso a paso, desde que llega un cliente hasta que se contrata a alguien?</p><textarea id="b8"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Métricas y resultados reales</h3>
+    <p class="sub">El diseño de referencia trae cifras inventadas (98.4% de retención, +420 ejecutivos colocados, etc.) — reemplázalas por las reales, o dejar en blanco si aún no se miden.</p>
+    <div class="qa-item"><p class="q">Tasa de retención real de las colocaciones</p><textarea id="b9"></textarea></div>
+    <div class="qa-item"><p class="q">Número real de ejecutivos colocados hasta la fecha</p><textarea id="b10"></textarea></div>
+    <div class="qa-item"><p class="q">Tiempo promedio real para presentar una terna final</p><textarea id="b11"></textarea></div>
+    <div class="qa-item"><p class="q">NPS o nivel de satisfacción de clientes, si se mide</p><textarea id="b12"></textarea></div>
+    <div class="qa-item"><p class="q">Tamaño real de la red/base de talento (o si aún no existe una base formal)</p><textarea id="b13"></textarea></div>
+    <div class="qa-item"><p class="q">¿Se ofrece garantía de reemplazo? ¿De cuántos días/meses según el tipo de servicio?</p><textarea id="b14"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Planes y precios reales</h3>
+    <p class="sub">El diseño propone 3 planes: Contingencia (18% del salario anual), Retenida (22%, en 3 hitos de pago) y Embedded/RPO ($4,500 USD/mes). Indica si esto aplica o si el modelo real es distinto.</p>
+    <div class="qa-item"><p class="q">¿Estos 3 planes reflejan la oferta real, o el modelo de precios es distinto?</p><textarea id="b15"></textarea></div>
+    <div class="qa-item"><p class="q">Porcentajes o tarifas reales por tipo de servicio</p><textarea id="b16"></textarea></div>
+    <div class="qa-item"><p class="q">Condiciones de pago reales (anticipo, hitos, plazo)</p><textarea id="b17"></textarea></div>
+    <div class="qa-item"><p class="q">¿Quién es la persona (nombre y cargo) que debe aparecer como responsable de agendar la consulta con un cliente nuevo?</p><textarea id="b18"></textarea></div>
+    <div class="qa-item"><p class="q">Disponibilidad real de agenda para reservar citas (días/horarios, zona horaria)</p><textarea id="b19"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Testimonios y prueba social</h3>
+    <div class="qa-item"><p class="q">¿Hay clientes reales que autoricen usar su nombre/logo/testimonio en el sitio?</p><textarea id="b20"></textarea></div>
+    <div class="qa-item"><p class="q">Testimonios reales (cita textual, nombre, cargo, empresa) — mínimo 2-3</p><textarea id="b21"></textarea></div>
+    <div class="qa-item"><p class="q">Logos de empresas cliente para mostrar como referencia (o si se debe omitir esa sección por ahora)</p><textarea id="b22"></textarea></div>
+    <div class="qa-item"><p class="q">Certificaciones reales de la empresa (ISO, membresías como AESC, etc.), si existen</p><textarea id="b23"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Equipo</h3>
+    <div class="qa-item"><p class="q">¿Cuántas personas conforman el equipo hoy y qué rol tiene cada una?</p><textarea id="b24"></textarea></div>
+    <div class="qa-item"><p class="q">¿Se debe mostrar el equipo públicamente en el sitio (fotos, bios) o mantenerlo privado?</p><textarea id="b25"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Vacantes activas</h3>
+    <div class="qa-item"><p class="q">Lista de vacantes activas hoy: cargo, empresa cliente, rango salarial, modalidad y ubicación</p><textarea id="b26"></textarea></div>
+    <div class="qa-item"><p class="q">¿Los rangos salariales y nombres de empresas cliente se pueden mostrar públicamente, o deben quedar anónimos?</p><textarea id="b27"></textarea></div>
+    <div class="qa-item"><p class="q">Categorías/industrias en las que se deben poder filtrar las vacantes</p><textarea id="b28"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Empresas cliente</h3>
+    <div class="qa-item"><p class="q">Lista de empresas cliente activas hoy y su tipo de acuerdo (retainer, exclusivo, puntual)</p><textarea id="b29"></textarea></div>
+    <div class="qa-item"><p class="q">¿De dónde llegan hoy los leads/prospectos? (referidos, LinkedIn, formulario web, eventos)</p><textarea id="b30"></textarea></div>
+    <div class="qa-item"><p class="q">¿Cuál es el tiempo real de respuesta a un lead nuevo?</p><textarea id="b31"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Facturación</h3>
+    <div class="qa-item"><p class="q">Moneda(s) en la que facturas y bancos que manejas</p><textarea id="b32"></textarea></div>
+    <div class="qa-item"><p class="q">¿Facturas con retención de impuestos u otros requisitos fiscales particulares por país?</p><textarea id="b33"></textarea></div>
+    <div class="qa-item"><p class="q">¿Usas ya algún sistema de facturación/contabilidad (ej. Siigo, QuickBooks)?</p><textarea id="b34"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Legal</h3>
+    <div class="qa-item"><p class="q">¿Existen ya términos de servicio, política de privacidad y código de ética redactados, o hay que crearlos?</p><textarea id="b35"></textarea></div>
+    <div class="qa-item"><p class="q">¿Manejas un acuerdo de confidencialidad (NDA) estándar con candidatos/clientes? ¿Hay un documento ya redactado?</p><textarea id="b36"></textarea></div>
+    <div class="qa-item"><p class="q">¿La empresa ya tiene o está tramitando certificaciones como ISO 27001, ISO 9001, GDPR o SOX? <span class="hint">El diseño de referencia exhibe esos sellos — hay que confirmar cuáles son reales y quitar los demás.</span></p><textarea id="b44"></textarea></div>
+    <div class="qa-item"><p class="q">¿Qué tan sensible es la información de ejecutivos en búsqueda pasiva? ¿Se necesita algún control de acceso o confidencialidad adicional?</p><textarea id="b45"></textarea></div>
+    <div class="qa-item"><p class="q">¿Aplica alguna ley de protección de datos específica del país donde operas (ej. Colombia: Ley 1581; México: LFPDPPP)?</p><textarea id="b46"></textarea></div>
+  </div>
+
+  <div class="qgroup">
+    <h3>Contenido visual</h3>
+    <div class="qa-item"><p class="q">¿Tienes fotografías profesionales disponibles (equipo, oficina), o preferimos usar ilustraciones?</p><textarea id="b37"></textarea></div>
+    <div class="qa-item"><p class="q">¿El tono azul/corporativo del diseño actual representa cómo quieres que se vea la marca, o lo imaginas distinto?</p><textarea id="b38"></textarea></div>
+  </div>
+
+  <div class="actions">
+    <p>Cuando termines (o si quieres mandar un avance), usa uno de estos botones y envíame el resultado — no necesitas que yo tenga acceso a este navegador.</p>
+    <button class="btn primary" id="btn-copy" type="button">Copiar respuestas</button>
+    <button class="btn" id="btn-download" type="button">Descargar respuestas (.txt)</button>
+    <span id="copy-status"></span>
+  </div>
+
+  <footer>Gracias por completarlo — con esto reemplazamos todo el contenido de ejemplo por tu información real.</footer>
+</div>
+
+<script>
+(function(){
+  try{
+    var areas = document.querySelectorAll('.qa-item textarea');
+    var total = areas.length;
+    var fill = document.getElementById('progress-fill');
+    var label = document.getElementById('progress-label');
+    function updateProgress(){
+      var answered = 0;
+      areas.forEach(function(a){ if(a.value.trim().length>0) answered++; });
+      if(fill) fill.style.width = (total? (answered/total*100):0) + '%';
+      if(label) label.textContent = answered + ' / ' + total + ' respondidas';
+    }
+    areas.forEach(function(a){
+      try{
+        var saved = localStorage.getItem('brief_'+a.id);
+        if(saved) a.value = saved;
+      }catch(e){}
+      a.addEventListener('input', function(){
+        try{ localStorage.setItem('brief_'+a.id, a.value); }catch(e){}
+        updateProgress();
+      });
+    });
+    updateProgress();
+
+    function buildSummaryText(){
+      var lines = [];
+      lines.push('AYUDA ESTRATÉGICA — RESPUESTAS AL BRIEF');
+      lines.push('Fecha: ' + new Date().toLocaleDateString());
+      lines.push('');
+      document.querySelectorAll('.qgroup').forEach(function(group){
+        var title = group.querySelector('h3');
+        lines.push((title ? title.textContent.trim() : '').toUpperCase());
+        group.querySelectorAll('.qa-item').forEach(function(item){
+          var qEl = item.querySelector('p.q');
+          var qText = qEl ? qEl.cloneNode(true) : null;
+          if(qText){
+            var hint = qText.querySelector('.hint');
+            if(hint) hint.remove();
+          }
+          var q = qText ? qText.textContent.trim() : '';
+          var ta = item.querySelector('textarea');
+          var answer = (ta && ta.value.trim()) || '(pendiente)';
+          lines.push('- ' + q);
+          lines.push('  Respuesta: ' + answer);
+        });
+        lines.push('');
+      });
+      return lines.join('\n');
+    }
+
+    var copyStatus = document.getElementById('copy-status');
+    var btnCopy = document.getElementById('btn-copy');
+    var btnDownload = document.getElementById('btn-download');
+
+    if(btnCopy) btnCopy.addEventListener('click', function(){
+      var text = buildSummaryText();
+      function ok(){ copyStatus.textContent = 'Copiado ✓'; setTimeout(function(){ copyStatus.textContent=''; }, 2500); }
+      function fail(){ copyStatus.textContent = 'No se pudo copiar automáticamente — selecciona y copia manualmente.'; }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(ok, fail);
+        } else {
+          var ta2 = document.createElement('textarea');
+          ta2.value = text; document.body.appendChild(ta2); ta2.select();
+          document.execCommand('copy'); document.body.removeChild(ta2); ok();
+        }
+      }catch(e){ fail(); }
+    });
+
+    if(btnDownload) btnDownload.addEventListener('click', function(){
+      try{
+        var text = buildSummaryText();
+        var blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'respuestas_brief_ayuda_estrategica.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }catch(e){}
+    });
+  }catch(e){}
+})();
+</script>
