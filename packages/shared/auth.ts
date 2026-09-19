@@ -2,31 +2,55 @@ import "server-only";
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { readJsonFile, writeJsonFile } from "./file-store";
+import { prisma } from "./db";
 import { PERMISSION_MODULES, type PermissionModule, type Role, type PublicUser } from "./permissions";
 
-// Autenticación y permisos del portal privado.
+// Autenticación y permisos del portal privado, sobre Postgres (Supabase) vía Prisma.
 // - admin: ve todo, puede crear/editar usuarios y sus permisos.
 // - partner: solo ve los módulos que el admin le otorgue explícitamente.
 // Sin 2FA por ahora (decisión de arquitectura: "no aún no").
-// Los tipos/constantes de permisos viven en ./permissions (seguro para cliente);
-// se re-exportan aquí por comodidad del lado servidor.
 export { PERMISSION_MODULES, PERMISSION_LABELS, type PermissionModule, type Role, type PublicUser } from "./permissions";
 
 export type User = {
   id: string;
   name: string;
   email: string;
-  passwordHash: string; // "salt:hash"
+  passwordHash: string;
   role: Role;
-  permissions: PermissionModule[]; // ignorado si role === "admin"
+  permissions: PermissionModule[];
   createdAt: string;
 };
 
-const USERS_FILE = "users.json";
 const COOKIE_NAME = "ae_session";
 const SESSION_SECRET = process.env.SESSION_SECRET ?? "dev-insecure-secret-change-me";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+
+function toRole(dbRole: "ADMIN" | "PARTNER"): Role {
+  return dbRole === "ADMIN" ? "admin" : "partner";
+}
+function toDbRole(role: Role): "ADMIN" | "PARTNER" {
+  return role === "admin" ? "ADMIN" : "PARTNER";
+}
+
+function fromDb(u: {
+  id: string;
+  name: string;
+  email: string;
+  passwordHash: string;
+  role: "ADMIN" | "PARTNER";
+  permissions: string[];
+  createdAt: Date;
+}): User {
+  return {
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    passwordHash: u.passwordHash,
+    role: toRole(u.role),
+    permissions: u.permissions as PermissionModule[],
+    createdAt: u.createdAt.toISOString(),
+  };
+}
 
 function hashPassword(password: string, salt = crypto.randomBytes(16).toString("hex")): string {
   const hash = crypto.scryptSync(password, salt, 64).toString("hex");
@@ -56,17 +80,18 @@ export function hasPermission(user: Pick<User, "role" | "permissions">, mod: Per
 }
 
 export async function listUsers(): Promise<User[]> {
-  return readJsonFile<User[]>(USERS_FILE, []);
+  const rows = await prisma.portalUser.findMany({ orderBy: { createdAt: "asc" } });
+  return rows.map(fromDb);
 }
 
 export async function findUserByEmail(email: string): Promise<User | undefined> {
-  const all = await listUsers();
-  return all.find((u) => u.email.toLowerCase() === email.toLowerCase());
+  const row = await prisma.portalUser.findUnique({ where: { email: email.toLowerCase() } });
+  return row ? fromDb(row) : undefined;
 }
 
 export async function findUserById(id: string): Promise<User | undefined> {
-  const all = await listUsers();
-  return all.find((u) => u.id === id);
+  const row = await prisma.portalUser.findUnique({ where: { id } });
+  return row ? fromDb(row) : undefined;
 }
 
 export async function verifyCredentials(email: string, password: string): Promise<User | null> {
@@ -82,39 +107,32 @@ export async function createUser(data: {
   role: Role;
   permissions: PermissionModule[];
 }): Promise<User> {
-  const all = await listUsers();
-  if (all.some((u) => u.email.toLowerCase() === data.email.toLowerCase())) {
+  const existing = await findUserByEmail(data.email);
+  if (existing) {
     throw new Error("Ya existe un usuario con ese correo.");
   }
-  const user: User = {
-    id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    name: data.name,
-    email: data.email,
-    passwordHash: hashPassword(data.password),
-    role: data.role,
-    permissions: data.role === "admin" ? [...PERMISSION_MODULES] : data.permissions,
-    createdAt: new Date().toISOString(),
-  };
-  all.push(user);
-  await writeJsonFile(USERS_FILE, all);
-  return user;
+  const row = await prisma.portalUser.create({
+    data: {
+      name: data.name,
+      email: data.email.toLowerCase(),
+      passwordHash: hashPassword(data.password),
+      role: toDbRole(data.role),
+      permissions: data.role === "admin" ? [...PERMISSION_MODULES] : data.permissions,
+    },
+  });
+  return fromDb(row);
 }
 
 export async function updateUserPermissions(
   id: string,
   permissions: PermissionModule[]
 ): Promise<User | undefined> {
-  const all = await listUsers();
-  const idx = all.findIndex((u) => u.id === id);
-  if (idx === -1) return undefined;
-  all[idx] = { ...all[idx], permissions };
-  await writeJsonFile(USERS_FILE, all);
-  return all[idx];
+  const row = await prisma.portalUser.update({ where: { id }, data: { permissions } });
+  return fromDb(row);
 }
 
 export async function deleteUser(id: string): Promise<void> {
-  const all = await listUsers();
-  await writeJsonFile(USERS_FILE, all.filter((u) => u.id !== id));
+  await prisma.portalUser.delete({ where: { id } });
 }
 
 // --- Sesión (cookie firmada, sin librerías externas) ---

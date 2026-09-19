@@ -1,17 +1,17 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import type { Vacancy } from "@shared/vacancies";
+import { isFieldHidden, type Vacancy, type VacancyVisibleFields } from "@shared/vacancy-types";
 import { SECTORS } from "@shared/site-content";
 import { createVacancyAction, setVacancyStatusAction, toggleFieldHiddenAction } from "./actions";
 
-const STATUS_LABEL: Record<Vacancy["status"], string> = {
+const STATUS_LABEL: Record<string, string> = {
   abierta: "Abierta",
   en_proceso: "En proceso",
   cerrada: "Cerrada",
 };
 
-const STATUS_TONE: Record<Vacancy["status"], string> = {
+const STATUS_TONE: Record<string, string> = {
   abierta: "bg-tertiary-fixed text-tertiary",
   en_proceso: "bg-surface-container text-primary",
   cerrada: "bg-surface-container-low text-secondary",
@@ -26,19 +26,19 @@ export function VacantesBoard({ vacancies }: { vacancies: Vacancy[] }) {
   const filtered = useMemo(() => {
     return vacancies.filter((v) => {
       if (sectorFilter !== "Todas" && v.sector !== sectorFilter) return false;
-      if (search && !`${v.title} ${v.location}`.toLowerCase().includes(search.toLowerCase())) return false;
+      if (search && !`${v.title} ${v.city}`.toLowerCase().includes(search.toLowerCase())) return false;
       return true;
     });
   }, [vacancies, sectorFilter, search]);
 
-  function toggleField(id: string, field: keyof Vacancy["hidden"], current: boolean) {
+  function toggleField(id: string, field: keyof VacancyVisibleFields, currentlyHidden: boolean) {
     startTransition(() => {
-      toggleFieldHiddenAction(id, field, !current);
+      toggleFieldHiddenAction(id, field, !currentlyHidden);
     });
   }
 
   function cycleStatus(v: Vacancy) {
-    const order: Vacancy["status"][] = ["abierta", "en_proceso", "cerrada"];
+    const order = ["abierta", "en_proceso", "cerrada"];
     const next = order[(order.indexOf(v.status) + 1) % order.length];
     startTransition(() => {
       setVacancyStatusAction(v.id, next);
@@ -119,20 +119,20 @@ export function VacantesBoard({ vacancies }: { vacancies: Vacancy[] }) {
               </div>
               <h3 className="font-headline-lg text-headline-sm text-on-surface font-bold">{v.title}</h3>
               <p className="font-label-md text-label-md text-primary flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">location_on</span> {v.location} ·{" "}
+                <span className="material-symbols-outlined text-[16px]">location_on</span> {v.city} ·{" "}
                 {v.modality}
               </p>
 
               <div className="flex flex-col gap-2 bg-surface-container-low p-3 rounded-lg">
                 <div className="flex items-center justify-between">
                   <span className="font-body-sm text-body-sm text-on-surface-variant">
-                    Salario: {v.hidden.salary ? "Oculto al público" : v.salaryRange}
+                    Salario: {isFieldHidden(v, "salaryRange") ? "Oculto al público" : v.salaryRange}
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer" title="Ocultar salario al público">
                     <input
                       type="checkbox"
-                      checked={v.hidden.salary}
-                      onChange={() => toggleField(v.id, "salary", v.hidden.salary)}
+                      checked={isFieldHidden(v, "salaryRange")}
+                      onChange={() => toggleField(v.id, "salaryRange", isFieldHidden(v, "salaryRange"))}
                       className="sr-only peer"
                     />
                     <div className="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
@@ -140,13 +140,13 @@ export function VacantesBoard({ vacancies }: { vacancies: Vacancy[] }) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-body-sm text-body-sm text-on-surface-variant truncate">
-                    Cliente: {v.hidden.clientCompany ? "Oculto al público" : v.clientCompany}
+                    Cliente: {isFieldHidden(v, "clientCompany") ? "Oculto al público" : v.clientCompany}
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer" title="Ocultar cliente al público">
                     <input
                       type="checkbox"
-                      checked={v.hidden.clientCompany}
-                      onChange={() => toggleField(v.id, "clientCompany", v.hidden.clientCompany)}
+                      checked={isFieldHidden(v, "clientCompany")}
+                      onChange={() => toggleField(v.id, "clientCompany", isFieldHidden(v, "clientCompany"))}
                       className="sr-only peer"
                     />
                     <div className="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
@@ -154,8 +154,8 @@ export function VacantesBoard({ vacancies }: { vacancies: Vacancy[] }) {
                 </div>
               </div>
 
-              {v.description && (
-                <p className="font-body-sm text-body-sm text-on-surface-variant">{v.description}</p>
+              {v.mission && (
+                <p className="font-body-sm text-body-sm text-on-surface-variant">{v.mission}</p>
               )}
             </div>
           ))}

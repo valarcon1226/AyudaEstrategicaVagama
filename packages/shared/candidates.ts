@@ -1,58 +1,55 @@
 import "server-only";
-import { readJsonFile, writeJsonFile } from "./file-store";
+import { prisma } from "./db";
+import type { CandidateApplication as PrismaCandidateApplication } from "@prisma/client";
 
-// Postulaciones de candidatos (Bolsa de Empleos del sitio público) — aparecen
-// en el pipeline del portal privado para la vacante correspondiente. Los
-// campos exactos del formulario de candidatos todavía no los confirma la
-// dueña; estos son los mínimos razonables mientras llega esa respuesta.
+// Postulaciones de candidatos (Bolsa de Empleos del sitio público) — tabla
+// postulaciones en Supabase. Campos según informacion adicional/preguntas.xlsx
+// (hoja "información candidatos").
 
-export type CandidateApplication = {
-  id: string;
-  vacancyId: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  message: string;
-  status: "nueva" | "en_revision" | "descartada" | "en_proceso";
-  createdAt: string;
-};
-
-const FILE = "candidate-applications.json";
+export type CandidateApplication = PrismaCandidateApplication;
 
 export async function listApplications(): Promise<CandidateApplication[]> {
-  return readJsonFile<CandidateApplication[]>(FILE, []);
+  return prisma.candidateApplication.findMany({ orderBy: { createdAt: "desc" } });
 }
 
-export async function listApplicationsForVacancy(
-  vacancyId: string
-): Promise<CandidateApplication[]> {
-  const all = await listApplications();
-  return all.filter((a) => a.vacancyId === vacancyId);
+export async function listApplicationsForVacancy(vacancyId: string): Promise<CandidateApplication[]> {
+  return prisma.candidateApplication.findMany({
+    where: { vacancyId },
+    orderBy: { createdAt: "desc" },
+  });
 }
 
-export async function createApplication(
-  data: Omit<CandidateApplication, "id" | "createdAt" | "status">
-): Promise<CandidateApplication> {
-  const all = await listApplications();
-  const application: CandidateApplication = {
-    ...data,
-    id: `app-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    status: "nueva",
-    createdAt: new Date().toISOString(),
-  };
-  all.unshift(application);
-  await writeJsonFile(FILE, all);
-  return application;
+export async function createApplication(data: {
+  vacancyId?: string;
+  fullName: string;
+  residenceCity?: string;
+  phone: string;
+  email: string;
+  age?: number;
+  nationality?: string;
+  linkedin?: string;
+  educationLevel?: string;
+  degreeObtained?: string;
+  totalExperienceYears?: number;
+  currentOrLastPosition?: string;
+  sectorExperience?: string;
+  peopleLed?: string;
+  lastThreeEmployers?: string;
+  salaryExpectation?: number;
+  salaryNegotiable?: boolean;
+  currentlyEmployed?: boolean;
+  noticePeriod?: string;
+  travelAvailability?: string;
+  relocationAvailability?: string;
+  preferredModality?: string;
+  excelLevel?: string;
+  specificTools?: string;
+  languages?: string;
+  cvUrl?: string;
+}): Promise<CandidateApplication> {
+  return prisma.candidateApplication.create({ data });
 }
 
-export async function updateApplicationStatus(
-  id: string,
-  status: CandidateApplication["status"]
-): Promise<CandidateApplication | undefined> {
-  const all = await listApplications();
-  const idx = all.findIndex((a) => a.id === id);
-  if (idx === -1) return undefined;
-  all[idx] = { ...all[idx], status };
-  await writeJsonFile(FILE, all);
-  return all[idx];
+export async function updateApplicationStatus(id: string, status: string): Promise<CandidateApplication> {
+  return prisma.candidateApplication.update({ where: { id }, data: { status } });
 }

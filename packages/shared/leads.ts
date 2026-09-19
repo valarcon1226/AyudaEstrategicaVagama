@@ -1,51 +1,39 @@
 import "server-only";
-import { readJsonFile, writeJsonFile } from "./file-store";
+import { prisma } from "./db";
+import type { CompanyLead as PrismaCompanyLead } from "@prisma/client";
 
-// Leads de empresas (formulario "Agendar Cita" del sitio público) — aparecen
-// en el portal privado como "Leads Web B2B por Atender". Los campos exactos
-// del formulario todavía no los confirma la dueña; estos son los mínimos
-// razonables mientras llega esa respuesta (no inventar más de la cuenta).
+// Leads de empresas (formulario "Agendar Cita" del sitio público) — tabla
+// leads_empresas en Supabase. Campos según informacion adicional/preguntas.xlsx
+// (hoja "informacion cliente").
 
-export type CompanyLead = {
-  id: string;
-  companyName: string;
-  contactName: string;
-  email: string;
-  phone: string;
-  message: string;
-  status: "nuevo" | "contactado" | "calificado";
-  createdAt: string;
-};
-
-const FILE = "company-leads.json";
+export type CompanyLead = PrismaCompanyLead;
 
 export async function listLeads(): Promise<CompanyLead[]> {
-  return readJsonFile<CompanyLead[]>(FILE, []);
+  return prisma.companyLead.findMany({ orderBy: { createdAt: "desc" } });
 }
 
-export async function createLead(
-  data: Omit<CompanyLead, "id" | "createdAt" | "status">
-): Promise<CompanyLead> {
-  const all = await listLeads();
-  const lead: CompanyLead = {
-    ...data,
-    id: `lead-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    status: "nuevo",
-    createdAt: new Date().toISOString(),
-  };
-  all.unshift(lead);
-  await writeJsonFile(FILE, all);
-  return lead;
+export async function createLead(data: {
+  contactName: string;
+  contactRole?: string;
+  companyName: string;
+  corporateEmail: string;
+  phone: string;
+  serviceInterest?: string;
+  vacanciesCount?: number;
+  hiringLocation?: string;
+  positionLevel?: string;
+  estimatedStartDate?: string;
+  needDescription?: string;
+  offeredSalary?: string;
+  additionalBenefits?: string;
+  workSchedule?: string;
+  vacancyLocation?: string;
+  preferredContactTime?: string;
+  dataConsent: boolean;
+}): Promise<CompanyLead> {
+  return prisma.companyLead.create({ data });
 }
 
-export async function updateLeadStatus(
-  id: string,
-  status: CompanyLead["status"]
-): Promise<CompanyLead | undefined> {
-  const all = await listLeads();
-  const idx = all.findIndex((l) => l.id === id);
-  if (idx === -1) return undefined;
-  all[idx] = { ...all[idx], status };
-  await writeJsonFile(FILE, all);
-  return all[idx];
+export async function updateLeadStatus(id: string, status: string): Promise<CompanyLead> {
+  return prisma.companyLead.update({ where: { id }, data: { status } });
 }

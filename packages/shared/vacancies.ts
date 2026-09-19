@@ -1,97 +1,77 @@
 import "server-only";
-import { readJsonFile, writeJsonFile } from "./file-store";
+import { prisma } from "./db";
+import {
+  isFieldHidden,
+  toPublicVacancy,
+  type PublicVacancy,
+  type Vacancy,
+  type VacancyVisibleFields,
+} from "./vacancy-types";
 
-// Vacantes reales — compartidas entre el portal privado (donde se gestionan)
-// y el sitio público (donde se muestran en la Bolsa de Empleos). Por ahora
-// persisten en data/vacancies.json en la raíz del repo; cuando se conecte
-// Postgres (decisión de arquitectura), esta es la capa a reemplazar.
+// Capa de datos de vacantes sobre Postgres (Supabase) vía Prisma. Los tipos y
+// funciones puras (isFieldHidden, toPublicVacancy) viven en ./vacancy-types
+// para poder importarse también desde componentes cliente.
+export { isFieldHidden, toPublicVacancy, type PublicVacancy, type Vacancy, type VacancyVisibleFields };
 
-export type Vacancy = {
-  id: string;
-  title: string;
-  clientCompany: string;
-  sector: string;
-  location: string;
-  modality: "Presencial" | "Remoto" | "Híbrido";
-  salaryRange: string;
-  description: string;
-  status: "abierta" | "en_proceso" | "cerrada";
-  createdAt: string;
-  // Cada campo sensible se puede ocultar en la vista pública — la dueña pidió
-  // que los partners puedan decidir, vacante por vacante, si el salario o el
-  // nombre del cliente se muestran o no en la Bolsa de Empleos.
-  hidden: {
-    salary: boolean;
-    clientCompany: boolean;
-  };
-};
-
-const FILE = "vacancies.json";
+function getVisibleFields(v: Vacancy): VacancyVisibleFields {
+  return (v.visibleFields as VacancyVisibleFields) ?? {};
+}
 
 export async function listVacancies(): Promise<Vacancy[]> {
-  return readJsonFile<Vacancy[]>(FILE, []);
+  return prisma.vacancy.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function listPublicVacancies(): Promise<Vacancy[]> {
-  const all = await listVacancies();
-  return all.filter((v) => v.status === "abierta");
+  return prisma.vacancy.findMany({
+    where: { status: "abierta" },
+    orderBy: { createdAt: "desc" },
+  });
 }
 
-export async function getVacancy(id: string): Promise<Vacancy | undefined> {
-  const all = await listVacancies();
-  return all.find((v) => v.id === id);
+export async function getVacancy(id: string): Promise<Vacancy | null> {
+  return prisma.vacancy.findUnique({ where: { id } });
 }
 
-export async function createVacancy(
-  data: Omit<Vacancy, "id" | "createdAt">
+export async function createVacancy(data: {
+  title: string;
+  clientCompany: string;
+  sector: string;
+  city: string;
+  modality: string;
+  salaryRange: string;
+  mission?: string;
+  status?: string;
+  hideSalary: boolean;
+  hideClientCompany: boolean;
+}): Promise<Vacancy> {
+  return prisma.vacancy.create({
+    data: {
+      title: data.title,
+      clientCompany: data.clientCompany,
+      sector: data.sector,
+      city: data.city,
+      modality: data.modality,
+      salaryRange: data.salaryRange,
+      mission: data.mission,
+      status: data.status ?? "abierta",
+      visibleFields: {
+        salaryRange: !data.hideSalary,
+        clientCompany: !data.hideClientCompany,
+      },
+    },
+  });
+}
+
+export async function updateVacancyStatus(id: string, status: string): Promise<Vacancy> {
+  return prisma.vacancy.update({ where: { id }, data: { status } });
+}
+
+export async function setFieldVisible(
+  id: string,
+  field: keyof VacancyVisibleFields,
+  visible: boolean
 ): Promise<Vacancy> {
-  const all = await listVacancies();
-  const vacancy: Vacancy = {
-    ...data,
-    id: `vac-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    createdAt: new Date().toISOString(),
-  };
-  all.push(vacancy);
-  await writeJsonFile(FILE, all);
-  return vacancy;
-}
-
-export async function updateVacancy(
-  id: string,
-  patch: Partial<Omit<Vacancy, "id" | "createdAt">>
-): Promise<Vacancy | undefined> {
-  const all = await listVacancies();
-  const idx = all.findIndex((v) => v.id === id);
-  if (idx === -1) return undefined;
-  all[idx] = { ...all[idx], ...patch };
-  await writeJsonFile(FILE, all);
-  return all[idx];
-}
-
-export async function setFieldHidden(
-  id: string,
-  field: keyof Vacancy["hidden"],
-  hidden: boolean
-): Promise<Vacancy | undefined> {
-  const all = await listVacancies();
-  const idx = all.findIndex((v) => v.id === id);
-  if (idx === -1) return undefined;
-  all[idx] = { ...all[idx], hidden: { ...all[idx].hidden, [field]: hidden } };
-  await writeJsonFile(FILE, all);
-  return all[idx];
-}
-
-// Vista segura para el sitio público: nunca expone un campo marcado como oculto.
-export type PublicVacancy = Omit<Vacancy, "hidden" | "salaryRange" | "clientCompany"> & {
-  salaryRange: string | null;
-  clientCompany: string | null;
-};
-
-export function toPublicVacancy(v: Vacancy): PublicVacancy {
-  const { hidden, ...rest } = v;
-  return {
-    ...rest,
-    salaryRange: hidden.salary ? null : v.salaryRange,
-    clientCompany: hidden.clientCompany ? null : v.clientCompany,
-  };
+  const current = await prisma.vacancy.findUniqueOrThrow({ where: { id } });
+  const visibleFields = { ...getVisibleFields(current), [field]: visible };
+  return prisma.vacancy.update({ where: { id }, data: { visibleFields } });
 }
